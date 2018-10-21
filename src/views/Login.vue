@@ -1,12 +1,12 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img alt="Vue logo" src="../assets/images/logo.png">
 
     <h1> Login screen </h1>
 
     <form v-on:submit.prevent="login">
       <input type="text" v-model="username" placeholder="username"> 
-      <input type="text" v-model="password" placeholder="password"> 
+      <input type="password" v-model="password" placeholder="password"> 
       <button type="submit"> Login </button>
 
       <p> {{message}} </p> 
@@ -29,7 +29,7 @@ export default class Login extends Vue {
 
   async login() {
     if (await userService.login(this.username, this.password)) {
-      this.message = "Success!";
+      this.$router.push('/dashboard');
     } else {
       this.message = "Login failed";
     }

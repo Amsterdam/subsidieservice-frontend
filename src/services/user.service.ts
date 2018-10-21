@@ -1,8 +1,10 @@
 export class UserService {
 
+    private KEY_NAME = 'credentials';
+
     async login(user: string, password: string) {
         if (await Promise.resolve(user === "test" && password === "test")) {
-            sessionStorage.setItem('credentials', btoa(`${user}:${password}`));
+            sessionStorage.setItem(this.KEY_NAME, btoa(`${user}:${password}`));
             return true;
         } else {
             return false;
@@ -10,11 +12,25 @@ export class UserService {
     }
 
     getCredentials() {
-        return sessionStorage.getItem('credentials');
+        return sessionStorage.getItem(this.KEY_NAME);
     }
 
     isLoggedIn() {
         return this.getCredentials() != null;
+    }
+
+    getUserName() {
+        const credentials = this.getCredentials();
+        if (!credentials) {
+            throw new Error("User not logged in");
+        }
+
+        const username = atob(credentials).split(":").shift() as string;
+        return username;
+    }
+
+    logout() {
+        sessionStorage.removeItem(this.KEY_NAME);
     }
 }
 
