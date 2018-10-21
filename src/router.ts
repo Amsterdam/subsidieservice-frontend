@@ -1,15 +1,20 @@
+
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import Login from './views/Login.vue';
+import userService from './services/user.service';
 
 Vue.use(Router);
 
-export default new Router({
+
+const router = new Router({
+  mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home,
+      path: '/login',
+      name: 'login',
+      component: Login,
     },
     {
       path: '/about',
@@ -18,6 +23,39 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import(/* webpackChunkName: "dashboard" */  './views/Dashboard.vue'),
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: Home,
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (!userService.isLoggedIn()) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;
