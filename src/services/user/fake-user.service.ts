@@ -1,4 +1,5 @@
-export class UserService {
+import { UserService } from './user.service';
+export class FakeUserService implements UserService {
 
     private KEY_NAME = 'credentials';
 
@@ -34,4 +35,5 @@ export class UserService {
     }
 }
 
-export default new UserService();
+export default new FakeUserService();
+

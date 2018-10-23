@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
 import Login from './views/Login.vue';
-import userService from './services/user.service';
+import userService from './services/user/user.service';
 
 Vue.use(Router);
 
@@ -17,9 +17,9 @@ const router = new Router({
       component: Login,
     },
     {
-      path: '/dashboard',
-      name: 'dashboard',
-      component: () => import(/* webpackChunkName: "dashboard" */  './views/Dashboard.vue'),
+      path: '/overview',
+      name: 'overview',
+      component: () => import(/* webpackChunkName: "overview" */  './views/Overview.vue'),
       meta: {
         requiresAuth: true
       }

@@ -1,18 +1,29 @@
 import { Subsidy } from '@/models/subsidy';
+import { SubsidiesService } from './subsidy.service';
 
-export class SubsidiesService {
+export class FakeSubsidiesService implements SubsidiesService {
 
     private fakeData: Subsidy[] = [
         {
             id: "1",
             name: "test",
-            // master: "",
-            // recipient: "",
+            master: {
+                id: "1",
+                name: "test",
+                balance: 100
+            },
+            recipient: {
+                id: "4",
+                name: "test4",
+                email: "test-guy4@test.com",
+                phoneNumber: "+31 20 123 45 67"
+            },
             frequency: "",
+            amount: 300,
             account: {
                 balance: 100,
                 name: "account1",
-                iban: "098789230873ryfgdbc",
+                iban: "NL12 3456 7890 1234",
                 transactions: [
                     {
                         amount: 30,
@@ -35,7 +46,7 @@ export class SubsidiesService {
     }
 
     getById(id: string) {
-        return Promise.resolve(this.fakeData.find((subs) => subs.id === id));
+        return Promise.resolve(this.fakeData.find((subs) => subs.id === id) as Subsidy);
     }
 
     create(subsidy: Subsidy) {
@@ -44,5 +55,5 @@ export class SubsidiesService {
     }
 }
 
-export default new SubsidiesService();
+export default new FakeSubsidiesService();
 

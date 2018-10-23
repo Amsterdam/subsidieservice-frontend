@@ -1,7 +1,8 @@
 import { Citizen } from '@/models/citizen';
+import { CitizenService } from './citizen.service';
 
 
-export class CitizenService {
+export class FakeCitizenService implements CitizenService {
 
     private fakeData: Citizen[] = [
         {
@@ -41,13 +42,14 @@ export class CitizenService {
     }
 
     getById(id: string) {
-        return Promise.resolve(this.fakeData.find((acc) => acc.id === id));
+        return Promise.resolve(this.fakeData.find((acc) => acc.id === id) as Citizen);
     }
 
-    create(account: Citizen) {
-        this.fakeData.push(account);
+    create(citizen: Citizen) {
+        this.fakeData.push(citizen);
         return Promise.resolve();
     }
 }
 
-export default new CitizenService();
+export default new FakeCitizenService();
+

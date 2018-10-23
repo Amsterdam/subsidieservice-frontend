@@ -1,6 +1,7 @@
 import { MasterAccount } from '@/models/masterAccount';
+import { IMasterAccountService } from './master-account.service';
 
-export class MasterAccountService {
+export class FakeMasterAccountService implements IMasterAccountService {
 
     private fakeData: MasterAccount[] = [
         {
@@ -30,7 +31,7 @@ export class MasterAccountService {
     }
 
     getById(id: string) {
-        return Promise.resolve(this.fakeData.find((acc) => acc.id === id));
+        return Promise.resolve(this.fakeData.find((acc) => acc.id === id) as MasterAccount);
     }
 
     create(account: MasterAccount) {
@@ -39,4 +40,4 @@ export class MasterAccountService {
     }
 }
 
-export default new MasterAccountService();
+export default new FakeMasterAccountService();
