@@ -1,5 +1,6 @@
 import { MasterAccount } from '@/models/masterAccount';
 import fakeMasterAccountService from './fake-master-account.service';
+import httpMasterAccountService from './http-master-account.service';
 
 
 export interface IMasterAccountService {
@@ -11,4 +12,4 @@ export interface IMasterAccountService {
 }
 
 // Default implementation
-export default fakeMasterAccountService as IMasterAccountService;
+export default httpMasterAccountService as IMasterAccountService;

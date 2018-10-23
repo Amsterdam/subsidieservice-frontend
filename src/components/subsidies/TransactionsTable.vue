@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button class="action primary pull-right" @click="download">  <span >  Download as .CSV </span> </button>
-    <table>
+    <button class="action primary pull-right" @click="download">  <span>  Download as .CSV </span> </button>
+    <table class="row-selection">
           <thead>
             <tr>
               <th>Name</th>
@@ -13,8 +13,8 @@
           </thead>
           <tbody>
             <tr v-for="transaction in data">
-              <td>{{ transaction.counterpartyName }}</td>
-              <td>{{ transaction.counterpartyIban }}</td>
+              <td>{{ transaction.counterparty_name }}</td>
+              <td>{{ transaction.counterparty_iban }}</td>
               <td>{{ transaction.description }}</td>
               <td>{{ transaction.amount }}</td>
               <td>{{ transaction.timestamp }}</td>

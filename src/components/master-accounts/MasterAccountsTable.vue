@@ -1,23 +1,24 @@
 <template>
-  <div>
+  <section id="master-accounts">
       <button class="action primary pull-right" @click="download">  <span >  Download as .CSV </span> </button>
-      <table id="master-accounts-table">
+      <h2> Master Accounts </h2>
+      <table id="master-accounts-table" class="row-selection">
           <thead>
             <tr>
-              <th>Id</th>
               <th>Name</th>
+              <th>Description</th>
               <th>Balance</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="account in data" v-bind:class="{ selected: selected == account.id }" @click="assignAccount(account.id)">
-              <td>{{ account.id }}</td>
               <td>{{ account.name }}</td>
+              <td>{{ account.description }}</td>
               <td>{{ account.balance }}</td>
             </tr>
           </tbody>
         </table>
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -45,14 +46,5 @@ export default class MasterAccountsTable extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-#master-accounts-table tr {
-  cursor: pointer;
 
-  &.selected {
-    background-color: aliceblue;
-    td {
-      box-shadow: none;
-    }
-  }
-}
 </style>

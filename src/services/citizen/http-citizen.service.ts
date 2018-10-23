@@ -9,15 +9,15 @@ export class HttpCitizenService extends HttpServiceBase implements CitizenServic
     }
 
     getAll() {
-        return super.get<Citizen[]>('citizens');
+        return super.get<Citizen[]>('/citizens');
     }
 
     getById(id: string) {
-        return super.get<Citizen>(`citizens/${id}`);
+        return super.get<Citizen>(`/citizens/${id}`);
     }
 
     create(citizen: Citizen): Promise<void> {
-     return super.post('citizens', citizen);
+     return super.post('/citizens', citizen);
     }
 
 }

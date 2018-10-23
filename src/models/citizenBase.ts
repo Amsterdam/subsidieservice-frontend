@@ -24,5 +24,5 @@ export interface CitizenBase {
     /**
      * Must be the phone number associated with the citizen's bank profile at a supported bank.
      */
-    phoneNumber?: string;
+    phone_number?: string;
 }

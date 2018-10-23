@@ -1,23 +1,21 @@
 <template>
   <div>
     <button class="action primary pull-right" @click="download">  <span >  Download as .CSV </span> </button>
-      <table>
+      <table class="row-selection">
           <thead>
             <tr>
-              <th>Id</th>
               <th>Name</th>
               <th>IBAN</th>
               <th>Amount</th>
-              <th>Phone number</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="subsidy in data"  v-bind:class="{ selected: selected == subsidy.id }" @click="selectSubsidy(subsidy.id)" >
-              <td>{{ subsidy.id }}</td>
               <td>{{ subsidy.name }}</td>
               <td>{{ subsidy.account.iban }}</td>
               <td>{{ subsidy.amount }}</td>
-              <td>{{ subsidy.recipient.phoneNumber }}</td>
+              <td>{{ subsidy.status }}</td>
             </tr>
           </tbody>
         </table>

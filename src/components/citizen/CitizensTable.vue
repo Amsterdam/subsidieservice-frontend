@@ -2,21 +2,19 @@
   <div>
     <button class="action primary pull-right" @click="download">  <span>  Download as .CSV </span> </button>
 
-    <table>
+    <table class="row-selection">
       <thead>
         <tr>
-          <th>Id</th>
           <th>Name</th>
           <th>Email</th>
           <th>Phone number</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="citizen in data">
-          <td>{{ citizen.id }}</td>
+        <tr v-for="citizen in data" v-bind:class="{ selected: selectedId == citizen.id }" @click="setSelected(citizen.id)">
           <td>{{ citizen.name }}</td>
           <td>{{ citizen.email }}</td>
-          <td>{{ citizen.phoneNumber }}</td>
+          <td>{{ citizen.phone_number }}</td>
         </tr>
       </tbody>
   </table>
@@ -24,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import { Citizen } from "@/models/citizen";
 import csvService from "@/services/csv/csv.service";
 
@@ -32,6 +30,13 @@ import csvService from "@/services/csv/csv.service";
 export default class CitizensTable extends Vue {
   @Prop()
   private data!: Citizen[];
+
+  private selectedId: string = "";
+
+  @Emit("update:selected-id")
+  setSelected(id: string) {
+    this.selectedId = id;
+  }
 
   download() {
     csvService.downloadCsv(this.data, "citizens.csv");

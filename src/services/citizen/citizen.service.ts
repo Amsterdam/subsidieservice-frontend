@@ -1,5 +1,6 @@
 import { Citizen } from '@/models/citizen';
 import fakeCitizensService from './fake-citizen.service';
+import httpCitizenService from './http-citizen.service';
 
 export interface CitizenService {
 
@@ -11,4 +12,4 @@ export interface CitizenService {
 
 }
 
-export default fakeCitizensService as CitizenService;
+export default httpCitizenService as CitizenService;

@@ -11,8 +11,21 @@ a {
 
 table {
     width: 100%;
+    &.row-selection tr {
+        cursor: pointer;
+        &.selected {
+            background-color: aliceblue;
+            td {
+                box-shadow: none;
+            }
+        }
+    }
 }
 
 .pull-right {
     float: right;
+}
+
+.pull-left{
+    float: left;
 }

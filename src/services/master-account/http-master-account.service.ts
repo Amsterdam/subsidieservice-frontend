@@ -10,15 +10,15 @@ export class HttpAccountService  extends HttpServiceBase implements IMasterAccou
     }
 
     getAll() {
-       return super.get<MasterAccount[]>('/master/accounts');
+       return super.get<MasterAccount[]>('/master-accounts');
     }
 
     getById(id: string) {
-        return super.get<MasterAccount>(`/master/accounts/${id}`);
+        return super.get<MasterAccount>(`/master-accounts/${id}`);
     }
 
     create(account: MasterAccount) {
-        return super.post('/master/accounts', account);
+        return super.post('/master-accounts', account);
     }
 }
 

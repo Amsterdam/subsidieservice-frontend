@@ -1,5 +1,6 @@
 import { Subsidy } from '@/models/subsidy';
 import fakeSubsidiesService from './fake-subsidy.service';
+import httpSubsidyService from './http-subsidy.service';
 
 export interface SubsidiesService {
     getAll(): Promise<Subsidy[]>;
@@ -9,4 +10,4 @@ export interface SubsidiesService {
     create(subsidy: Subsidy): Promise<void>;
 }
 
-export default fakeSubsidiesService as SubsidiesService;
+export default httpSubsidyService as SubsidiesService;
