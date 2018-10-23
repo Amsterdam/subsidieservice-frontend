@@ -12,7 +12,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="transaction in data">
+            <tr v-for="transaction in data" :key="transaction.id">
               <td>{{ transaction.counterparty_name }}</td>
               <td>{{ transaction.counterparty_iban }}</td>
               <td>{{ transaction.description }}</td>

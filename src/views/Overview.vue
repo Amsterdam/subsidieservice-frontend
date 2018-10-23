@@ -4,15 +4,16 @@
     <h1> Overview page </h1>
     
     <MasterAccountsTable :data="masterAccounts"  @update:selected="onMasterAccountSelection"></MasterAccountsTable>
+    <p v-if="filteredSubsidies.length == 0"> There are no subisides for this master account </p>
+    
+    <button v-if="selectedMasterAccount" class="action secundary-blue" @click="onConnect" >  <span >  Connect / Invite </span> </button>
+    <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
 
     <section id="subsidies" v-if="filteredSubsidies.length > 0">
       <TabButtons :tab-names="['Subsidies', 'Citizens']" v-bind:selected-tab="selectedTab"  v-on:update:selected-tab="selectedTab = $event" ></TabButtons>
-      <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
 
       <div id="subsidies-tab" v-if="selectedTab === 'Subsidies'">
-        <h2> Subsidies </h2>
-        <button class="action secundary-blue pull-left" @click="onConnect" >  <span >  Connect / Invite </span> </button>
-     
+        <h2> Subsidies </h2> 
         <SubsidyCreation v-if="showSubsidyCreation" :citizen="selectedCitizen" :masterAccount="selectedMasterAccount"
           @success="onConnectSuccess" @cancel="onConnectCanceled">
         </SubsidyCreation>
@@ -32,7 +33,6 @@
         <CitizensTable :data="citizens" @update:selected-id="onCitizenSelection" ></CitizensTable>
       </div>
     </section>
-    <p v-if="filteredSubsidies.length == 0"> There are no subisides for this master account </p>
   </div>
 </template>
 
@@ -88,9 +88,6 @@ export default class Dashboard extends Vue {
     this.masterAccounts = await masterAccountService.getAll();
     this.citizens = await citizenService.getAll();
     this.allSubsidies = await subsidyService.getAll();
-
-    console.table(this.citizens);
-    console.table(this.allSubsidies);
   }
 
   onMasterAccountSelection(id: string) {

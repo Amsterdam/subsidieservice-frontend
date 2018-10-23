@@ -1,4 +1,5 @@
 import defaultUserService, { UserService } from './user/user.service';
+import { ApiError } from '@/models/error';
 
 export abstract class HttpServiceBase {
 
@@ -10,26 +11,35 @@ export abstract class HttpServiceBase {
         this.userService = userService || defaultUserService;
     }
 
-    get<T>(url: string) {
-        return fetch(this.baseUrl + url, {
-            method: "GET",
-            headers: {
-                Authorization: `Basic ${this.userService.getCredentials()} `
-            }
-        })
-            .then(res => res.json())
-            .then(json => json as T);
+    async getData<T>(response: Response) {
+        const json = await response.json();
+        if (response.status >= 400) {
+            const error = json as ApiError;
+            throw new Error(`${error.title}. ${error.detail}`);
+        }
+
+        return json as T;
     }
 
-    post<T = void>(url: string, data: any) {
-        return fetch(this.baseUrl + url, {
+    async get<T>(url: string) {
+        const res = await fetch(this.baseUrl + url, {
+            method: "GET",
+            headers: {
+                Authorization: `Basic ${this.userService.getCredentials()}`
+            }
+        });
+        return await this.getData<T>(res);
+    }
+
+    async post<T = void>(url: string, data: any) {
+        const res = await fetch(this.baseUrl + url, {
             method: "POST",
             headers: {
-                Authorization: `Basic ${this.userService.getCredentials()} `
+                "Authorization": `Basic ${this.userService.getCredentials()}`,
+                "Content-Type": 'application/json'
             },
             body: JSON.stringify(data)
-        })
-            .then(res => res.json())
-            .then(json => json as T);
+        });
+        return await this.getData<T>(res);
     }
 }

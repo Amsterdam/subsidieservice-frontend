@@ -11,13 +11,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="account in data" v-bind:class="{ selected: selected == account.id }" @click="assignAccount(account.id)">
+            <tr v-for="account in data" :key="account.id"
+            v-bind:class="{ selected: selected === account.id }" @click="assignAccount(account.id)">
               <td>{{ account.name }}</td>
               <td>{{ account.description }}</td>
               <td>{{ account.balance }}</td>
             </tr>
           </tbody>
-        </table>
+      </table>
   </section>
 </template>
 

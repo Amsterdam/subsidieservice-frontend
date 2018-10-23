@@ -9,7 +9,7 @@
                 <label for="formInput">Subsidy Name</label>
               </div>
               <div class="invoer">
-                <input type="text" v-model="subsidyData.name" placeholder="Subsidy Name<" class="input">
+                <input type="text" v-model="subsidyData.name" placeholder="Subsidy Name" class="input">
               </div>
             </div>
           <div class="rij mode_input text rij_verplicht">
@@ -62,20 +62,24 @@ export default class SubsidyDetails extends Vue {
   private subsidyData = {
     name: "",
     amount: 0,
-    comment: 1
+    comment: ""
   };
 
   private message: string = "";
 
-
   async submit() {
-    const result: SubsidyBase = Object.assign(this.subsidyData, {
-      master: this.masterAccount,
-      recipient: this.citizen
-    });
+    try {
+      const result: SubsidyBase = Object.assign(this.subsidyData, {
+        master: this.masterAccount,
+        recipient: this.citizen,
+        amount: Number(this.subsidyData.amount)
+      });
 
-    await subsidyService.create(result);
-    this.$emit('success');
+      await subsidyService.create(result);
+      this.$emit("success");
+    } catch (error) {
+      this.message = error.message;
+    }
   }
 }
 </script>

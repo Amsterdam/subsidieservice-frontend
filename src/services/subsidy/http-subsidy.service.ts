@@ -18,7 +18,7 @@ export class HttpSubsidiesService extends HttpServiceBase implements SubsidiesSe
     }
 
     create(subsidy: Subsidy) {
-        return super.post('subsidies', subsidy);
+        return super.post('/subsidies', subsidy);
     }
 }
 

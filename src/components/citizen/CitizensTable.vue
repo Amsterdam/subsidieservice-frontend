@@ -11,7 +11,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="citizen in data" v-bind:class="{ selected: selectedId == citizen.id }" @click="setSelected(citizen.id)">
+        <tr v-for="citizen in data" :key="citizen.id"
+            v-bind:class="{ selected: selectedId == citizen.id }"
+            @click="setSelected(citizen.id)">
           <td>{{ citizen.name }}</td>
           <td>{{ citizen.email }}</td>
           <td>{{ citizen.phone_number }}</td>

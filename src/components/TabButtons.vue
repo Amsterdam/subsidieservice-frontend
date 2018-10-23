@@ -1,13 +1,9 @@
 <template>
-
-
-
-<ul class="tabs">
-    <li v-for="tab in tabNames"  v-bind:class="{selected: selectedTab === tab}">
-        <a @click="$emit('update:selected-tab', tab)"> {{tab}} </a>
-    </li>
-</ul>
-
+  <ul class="tabs">
+      <li v-for="tab in tabNames" :key="tab" v-bind:class="{selected: selectedTab === tab}">
+          <a @click="$emit('update:selected-tab', tab)"> {{tab}} </a>
+      </li>
+  </ul>
 </template>
 
 <script lang="ts">

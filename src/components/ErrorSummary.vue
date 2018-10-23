@@ -3,7 +3,7 @@
 <div class="error-summary" v-if="errors && errors.length">
     <h2>Error</h2>
     <ul>
-        <li v-for="error in errors"> {{error}} </li>
+        <li v-for="error in errors" :key="error"> {{error}} </li>
     </ul>
 </div>
 

@@ -14,7 +14,7 @@
 /**
  * The body model for a 4xx or 5xx status code
  */
-export interface Error {
+export interface ApiError {
     detail?: string;
     status?: number;
     title?: string;
