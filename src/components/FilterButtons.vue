@@ -27,8 +27,8 @@ export default class TabButtons extends Vue {
   @Prop()
   private filterNames!: string[];
 
-  @Prop() 
-  private resultCount! : number;
+  @Prop()
+  private resultCount!: number;
 
 }
 </script>
