@@ -1,7 +1,6 @@
 <template>
   <section id="subsidies">
     <div id="table-filters">
-      {{resultsCount}}
         <FilterButtons :filterNames="['OPEN', 'CLOSED', 'PENDING_ACCEPT', 'ALL']" 
           :result-count="filteredData.length"
           @update:selected-filter="onFilterChange" ></FilterButtons>
