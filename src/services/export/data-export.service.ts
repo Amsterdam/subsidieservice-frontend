@@ -19,7 +19,8 @@ export class DataExportService {
         const groupedSubsidies = this.groupByMasterId(subsidies);
 
         for (const master of accounts) {
-            const subsidesGrp = groupedSubsidies[master.id!];
+            const subsidesGrp = groupedSubsidies[master.id!] || [];
+
             for (const subsidy of subsidesGrp) {
                 const transactions = await this.subsidyService.getTransactionsForId(subsidy.id!);
 
