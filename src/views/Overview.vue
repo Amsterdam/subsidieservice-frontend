@@ -120,6 +120,7 @@ export default class Dashboard extends Vue {
       this.message = "Please select a citizen";
     } else {
       this.message = "";
+      this.selectedTab = "Subsidies";
       this.showSubsidyCreation = true;
     }
   }

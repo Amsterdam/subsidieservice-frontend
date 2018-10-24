@@ -16,5 +16,5 @@ CMD ["nginx", "-g", "daemon off;"]
 
 
 # Sample build run
-# docker build . -t subsidy-frontend
-# docker run -it -p 8080:80 --rm --name subsidy-container subsidy-frontend
+# docker build . -t subsidy/frontend
+# docker run -it -p 8080:80 --rm --name subsidy_frontend_dev subsidy/frontend

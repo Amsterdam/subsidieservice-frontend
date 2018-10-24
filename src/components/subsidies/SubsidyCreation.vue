@@ -70,8 +70,8 @@ export default class SubsidyDetails extends Vue {
   async submit() {
     try {
       const result: SubsidyBase = Object.assign(this.subsidyData, {
-        master: this.masterAccount,
-        recipient: this.citizen,
+        master: { id: this.masterAccount.id },
+        recipient: { id: this.citizen.id },
         amount: Number(this.subsidyData.amount)
       });
 
