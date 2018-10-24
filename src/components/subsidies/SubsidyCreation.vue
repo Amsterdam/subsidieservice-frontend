@@ -46,9 +46,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-import { MasterAccount } from "@/models/masterAccount";
-import { CitizenBase } from "@/models/citizenBase";
-import { SubsidyBase } from "@/models/subsidyBase";
+import { MasterAccount } from "@/models/api/masterAccount";
+import { CitizenBase } from "@/models/api/citizenBase";
+import { SubsidyBase } from "@/models/api/subsidyBase";
 import subsidyService from "@/services/subsidy/subsidy.service";
 
 @Component

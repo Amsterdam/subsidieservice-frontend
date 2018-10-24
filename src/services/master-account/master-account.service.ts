@@ -1,4 +1,4 @@
-import { MasterAccount } from '@/models/masterAccount';
+import { MasterAccount } from '@/models/api/masterAccount';
 import fakeMasterAccountService from './fake-master-account.service';
 import httpMasterAccountService from './http-master-account.service';
 

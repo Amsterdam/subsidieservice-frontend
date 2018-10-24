@@ -3,6 +3,8 @@
 
     <h1> Overview page </h1>
     
+    <button class="action primary pull-right" @click="exportData">  <span>  Download CSV </span> </button>
+
     <MasterAccountsTable :data="masterAccounts"  @update:selected="onMasterAccountSelection"></MasterAccountsTable>
     <p v-if="filteredSubsidies.length == 0"> There are no subisides for this master account </p>
     
@@ -38,9 +40,9 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { MasterAccount } from "@/models/masterAccount";
-import { Subsidy } from "@/models/subsidy";
-import { Citizen } from "@/models/citizen";
+import { MasterAccount } from "@/models/api/masterAccount";
+import { Subsidy } from "@/models/api/subsidy";
+import { Citizen } from "@/models/api/citizen";
 
 import MasterAccountsTable from "@/components/master-accounts/MasterAccountsTable.vue";
 import CitizensTable from "@/components/citizen/CitizensTable.vue";
@@ -56,6 +58,11 @@ import ErrorSummary from "@/components/ErrorSummary.vue";
 import masterAccountService from "@/services/master-account/master-account.service";
 import citizenService from "@/services/citizen/citizen.service";
 import subsidyService from "@/services/subsidy/subsidy.service";
+
+import csvService from "@/services/export/csv.service";
+import exportService from "@/services/export/data-export.service";
+import fileService from "@/services/file/file.service";
+import { FullEntity } from "@/models/full-entity";
 
 @Component({
   components: {
@@ -126,6 +133,27 @@ export default class Dashboard extends Vue {
 
   onConnectCanceled() {
     this.showSubsidyCreation = false;
+  }
+
+  async exportData() {
+    const data = exportService.combineData(
+      this.masterAccounts,
+      this.allSubsidies
+    );
+
+    const columnNames: { [x in keyof FullEntity]: string } = {
+      masterAccount: "Master Account",
+      recipientName: "Recipient Name",
+      recipientPhone: "Recipient Phone",
+      recipientIban: "Recipient IBAN",
+      amount: "Amount",
+      masterIban: "Master IBAN",
+      description: "Description",
+      date: "Date"
+    };
+
+    const csvText = await csvService.getCsvTextAsync(data, columnNames);
+    fileService.downloadCsv(csvText, "data.csv");
   }
 }
 </script>

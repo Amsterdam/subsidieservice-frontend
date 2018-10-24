@@ -1,7 +1,5 @@
 <template>
   <div>
-    <button class="action primary pull-right" @click="download">  <span>  Download as .CSV </span> </button>
-
     <table class="row-selection">
       <thead>
         <tr>
@@ -25,8 +23,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-import { Citizen } from "@/models/citizen";
-import csvService from "@/services/csv/csv.service";
+import { Citizen } from "@/models/api/citizen";
 
 @Component
 export default class CitizensTable extends Vue {
@@ -38,10 +35,6 @@ export default class CitizensTable extends Vue {
   @Emit("update:selected-id")
   setSelected(id: string) {
     this.selectedId = id;
-  }
-
-  download() {
-    csvService.downloadCsv(this.data, "citizens.csv");
   }
 }
 </script>

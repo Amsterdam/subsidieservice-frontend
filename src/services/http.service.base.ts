@@ -1,5 +1,5 @@
 import defaultUserService, { UserService } from './user/user.service';
-import { ApiError } from '@/models/error';
+import { ApiError } from '@/models/api/error';
 
 export abstract class HttpServiceBase {
 

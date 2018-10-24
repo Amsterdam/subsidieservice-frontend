@@ -1,4 +1,4 @@
-import { MasterAccount } from '@/models/masterAccount';
+import { MasterAccount } from '@/models/api/masterAccount';
 import { IMasterAccountService } from './master-account.service';
 
 export class FakeMasterAccountService implements IMasterAccountService {

@@ -1,4 +1,4 @@
-import { MasterAccount } from '@/models/masterAccount';
+import { MasterAccount } from '@/models/api/masterAccount';
 import { IMasterAccountService } from './master-account.service';
 import { HttpServiceBase } from '../http.service.base';
 import { UserService } from '../user/user.service';

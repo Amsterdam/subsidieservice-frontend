@@ -1,6 +1,5 @@
 <template>
   <section id="master-accounts">
-      <button class="action primary pull-right" @click="download">  <span >  Download as .CSV </span> </button>
       <h2> Master Accounts </h2>
       <table id="master-accounts-table" class="row-selection">
           <thead>
@@ -24,8 +23,8 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-import { MasterAccount } from "@/models/masterAccount";
-import csvService from "@/services/csv/csv.service";
+import { MasterAccount } from "@/models/api/masterAccount";
+
 
 @Component
 export default class MasterAccountsTable extends Vue {
@@ -39,9 +38,6 @@ export default class MasterAccountsTable extends Vue {
     this.selected = id;
   }
 
-  download() {
-    csvService.downloadCsv(this.data, "master-accounts.csv");
-  }
 }
 </script>
 

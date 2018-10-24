@@ -3,23 +3,23 @@
   <div class="data-wrapper row">
     <div class="col-md-6">
       <dl>
-        <dt> Name </dt>
+        <dt> Subsidy </dt>
         <dd> {{subsidy.name}} </dd>
       </dl>
       <dl>
-        <dt> Amount </dt>
+        <dt> Ammount </dt>
         <dd> {{subsidy.amount}} </dd>
       </dl>
       <dl>
-        <dt> Account Name </dt>
+        <dt> Master Name </dt>
         <dd> {{subsidy.master.name}} </dd>
       </dl>
       <dl>
-        <dt> Account IBAN </dt>
+        <dt> Master IBAN </dt>
         <dd> {{subsidy.master.iban}} </dd>
       </dl>
       <dl>
-        <dt> Account Balance </dt>
+        <dt> Master Balance </dt>
         <dd> {{subsidy.master.balance}} </dd>
       </dl>
     </div>
@@ -34,16 +34,16 @@
         <dd> {{subsidy.recipient.email}} </dd>
       </dl>
       <dl>
-        <dt> Start Date </dt>
-        <dd> {{subsidy.startDate}} </dd>
-      </dl>
-      <dl>
-        <dt>End Date </dt>
-        <dd> {{subsidy.endDate}} </dd>
+        <dt> Recipient IBAN </dt>
+        <dd> {{subsidy.account.iban}} </dd>
       </dl>
       <dl>
         <dt>Status</dt>
         <dd>{{subsidy.status}}</dd>
+      </dl>
+      <dl>
+        <dt>Last updated</dt>
+        <dd>{{subsidy.last_updated}}</dd>
       </dl>
     </div>
   </div>
@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Subsidy } from "@/models/subsidy";
+import { Subsidy } from "@/models/api/subsidy";
 
 @Component
 export default class SubsidyDetails extends Vue {
@@ -76,17 +76,21 @@ dl {
   display: flex;
 
   dt {
-    min-width: 160px;
+    min-width: 120px;
     font-weight: 400;
   }
 
   dd {
-    max-width: 400px;
+    max-width: 460px;
     font-weight: 700;
   }
 }
 
-.data-wrapper-wide > dl dd {
-  max-width: unset;
+.data-wrapper-wide {
+  margin-top: 40px;
+  
+  > dl dd {
+    max-width: unset;
+  }
 }
 </style>

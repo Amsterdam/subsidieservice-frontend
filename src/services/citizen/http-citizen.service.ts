@@ -1,6 +1,6 @@
 import { HttpServiceBase } from '../http.service.base';
 import { CitizenService } from './citizen.service';
-import { Citizen } from '../../models/citizen';
+import { Citizen } from '../../models/api/citizen';
 import { UserService } from '../user/user.service';
 
 export class HttpCitizenService extends HttpServiceBase implements CitizenService {

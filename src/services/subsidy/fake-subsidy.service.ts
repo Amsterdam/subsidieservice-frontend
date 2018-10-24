@@ -1,4 +1,4 @@
-import { Subsidy } from '@/models/subsidy';
+import { Subsidy } from '@/models/api/subsidy';
 import { SubsidiesService } from './subsidy.service';
 
 export class FakeSubsidiesService implements SubsidiesService {
@@ -47,6 +47,10 @@ export class FakeSubsidiesService implements SubsidiesService {
 
     getById(id: string) {
         return Promise.resolve(this.fakeData.find((subs) => subs.id === id) as Subsidy);
+    }
+
+    getTransactionsForId(id: string) {
+        return this.getById(id).then(subsidy => subsidy.account ? subsidy.account.transactions || [] : []);
     }
 
     create(subsidy: Subsidy) {

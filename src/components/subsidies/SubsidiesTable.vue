@@ -6,7 +6,6 @@
           @update:selected-filter="onFilterChange" ></FilterButtons>
     </div>
     <div id="table-data">
-      <button class="action primary pull-right" @click="download"> <span>  Download as .CSV </span> </button>
       <table class="row-selection">
           <thead>
             <tr>
@@ -32,10 +31,9 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
-import { Subsidy } from "@/models/subsidy";
+import { Subsidy } from "@/models/api/subsidy";
 
 import FilterButtons from "@/components/FilterButtons.vue";
-import csvService from "@/services/csv/csv.service";
 
 @Component({
   components: { FilterButtons }
@@ -60,10 +58,6 @@ export default class SubsidiesTable extends Vue {
     } else {
       this.filteredData = this.data.filter(s => s.status === filter);
     }
-  }
-
-  download() {
-    csvService.downloadCsv(this.data, "subsidies.csv");
   }
 }
 </script>

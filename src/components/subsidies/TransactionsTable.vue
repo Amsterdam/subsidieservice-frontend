@@ -1,6 +1,5 @@
 <template>
   <div>
-    <button class="action primary pull-right" @click="download">  <span>  Download as .CSV </span> </button>
     <table class="row-selection">
           <thead>
             <tr>
@@ -26,17 +25,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Transaction } from "@/models/transaction";
-import csvService from "@/services/csv/csv.service";
+import { Transaction } from "@/models/api/transaction";
 
 @Component
 export default class TransactionsTable extends Vue {
   @Prop()
   private data!: Transaction[];
 
-  download() {
-    csvService.downloadCsv(this.data, "transactions.csv");
-  }
 }
 </script>
 

@@ -1,4 +1,4 @@
-import { Citizen } from '@/models/citizen';
+import { Citizen } from '@/models/api/citizen';
 import { CitizenService } from './citizen.service';
 
 
