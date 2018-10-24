@@ -23,12 +23,8 @@
 
           <button class="action primary"> Login </button>
 
-          <div class="error-summary" v-if="message">
-            <h2>Error</h2>
-            <ul>
-              <li> {{message}} </li>
-            </ul>
-          </div>
+          <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
+
         </form>
       </div>
     </div>
@@ -38,9 +34,10 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import userService from "@/services/user/user.service";
+import ErrorSummary from "@/components/ErrorSummary.vue";
 
 @Component({
-  components: {}
+  components: { ErrorSummary }
 })
 export default class Login extends Vue {
   private username: string = "";
