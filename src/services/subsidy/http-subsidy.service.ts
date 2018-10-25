@@ -2,6 +2,7 @@ import { UserService } from '../user/user.service';
 import { SubsidiesService } from './subsidy.service';
 import { HttpServiceBase } from '../http.service.base';
 import { Subsidy } from '@/models/api/subsidy';
+import { SubsidyBase } from '@/models/api/subsidyBase';
 
 export class HttpSubsidiesService extends HttpServiceBase implements SubsidiesService {
 
@@ -10,7 +11,7 @@ export class HttpSubsidiesService extends HttpServiceBase implements SubsidiesSe
     }
 
     getAll() {
-        return super.get<Subsidy[]>('/subsidies');
+        return super.get<SubsidyBase[]>('/subsidies');
     }
 
     getById(id: string) {

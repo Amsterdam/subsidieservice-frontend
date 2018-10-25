@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2> Citizens </h2>
     <table class="row-selection">
       <thead>
         <tr>
@@ -11,7 +12,7 @@
       <tbody>
         <tr v-for="citizen in data" :key="citizen.id"
             v-bind:class="{ selected: selectedId == citizen.id }"
-            @click="setSelected(citizen.id)">
+            @click="$emit('update:selected-id', citizen.id)">
           <td>{{ citizen.name }}</td>
           <td>{{ citizen.email }}</td>
           <td>{{ citizen.phone_number }}</td>
@@ -30,12 +31,8 @@ export default class CitizensTable extends Vue {
   @Prop()
   private data!: Citizen[];
 
-  private selectedId: string = "";
-
-  @Emit("update:selected-id")
-  setSelected(id: string) {
-    this.selectedId = id;
-  }
+  @Prop()
+  private selectedId!: string;
 }
 </script>
 

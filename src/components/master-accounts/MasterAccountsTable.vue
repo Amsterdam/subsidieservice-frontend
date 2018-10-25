@@ -1,5 +1,5 @@
 <template>
-  <section id="master-accounts">
+  <div>
       <h2> Master Accounts </h2>
       <table id="master-accounts-table" class="row-selection">
           <thead>
@@ -18,7 +18,7 @@
             </tr>
           </tbody>
       </table>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">

@@ -4,7 +4,7 @@
     <div class="formulier-section">
       <div class="formshadow">
         <form v-on:submit.prevent="submit">
-          <div class="rij mode_input text rij_verplicht">
+          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['name']}">
               <div class="label">
                 <label for="formInput">Subsidy Name</label>
               </div>
@@ -12,7 +12,7 @@
                 <input type="text" v-model="subsidyData.name" placeholder="Subsidy Name" class="input">
               </div>
             </div>
-          <div class="rij mode_input text rij_verplicht">
+          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['amount']}">
               <div class="label">
                 <label for="formInput">Amount</label>
               </div>
@@ -32,12 +32,8 @@
           <button class="action primary"> Submit </button>
           <button type="reset" class="action" @click="$emit('cancel')" > Cancel </button>
 
-          <div class="error-summary" v-if="message">
-            <h2>Error</h2>
-            <ul>
-              <li> {{message}} </li>
-            </ul>
-          </div>
+          <ErrorSummary :errors="[message]"></ErrorSummary>
+          
         </form>
       </div>
     </div>
@@ -49,9 +45,12 @@ import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import { MasterAccount } from "@/models/api/masterAccount";
 import { CitizenBase } from "@/models/api/citizenBase";
 import { SubsidyBase } from "@/models/api/subsidyBase";
-import subsidyService from "@/services/subsidy/subsidy.service";
 
-@Component
+import ErrorSummary from '@/components/ErrorSummary.vue';
+
+@Component({
+  components: { ErrorSummary }
+})
 export default class SubsidyDetails extends Vue {
   @Prop()
   private citizen!: CitizenBase;
@@ -67,18 +66,35 @@ export default class SubsidyDetails extends Vue {
 
   private message: string = "";
 
-  async submit() {
-    try {
-      const result: SubsidyBase = Object.assign(this.subsidyData, {
-        master: { id: this.masterAccount.id },
-        recipient: { id: this.citizen.id },
-        amount: Number(this.subsidyData.amount)
-      });
+  private validation: { [key: string]: string } = {};
 
-      await subsidyService.create(result);
-      this.$emit("success");
-    } catch (error) {
-      this.message = error.message;
+  get hasErrors() {
+    return this.errors.length > 0;
+  }
+
+  get errors() {
+    return Object.values(this.validation);
+  }
+
+  submit() {
+    let hasErrors = false;
+
+    if (!this.subsidyData.name) {
+      this.$set(this.validation, "name", "Name is required");
+      hasErrors = true;
+    } else {
+      this.$set(this.validation, "name", undefined);
+    }
+
+    if (!this.subsidyData.amount || !isNaN(this.subsidyData.amount)) {
+      this.$set(this.validation, "amount", "Amount is not correct");
+      hasErrors = true;
+    } else {
+      this.$set(this.validation, "amount", undefined);
+    }
+
+    if (!hasErrors) {
+      this.$emit("submit", this.subsidyData);
     }
   }
 }

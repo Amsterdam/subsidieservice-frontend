@@ -3,7 +3,7 @@ import { ApiError } from '@/models/api/error';
 
 export abstract class HttpServiceBase {
 
-    protected baseUrl: string = process.env.VUE_APP_API_URL;
+    baseUrl: string = process.env.VUE_APP_API_URL;
 
     protected userService: UserService;
 

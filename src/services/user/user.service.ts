@@ -1,4 +1,5 @@
 import fakeUserService from './fake-user.service';
+import httpUserService from './http-user.service';
 
 export interface UserService {
     login(user: string, password: string): Promise<boolean>;
@@ -12,4 +13,4 @@ export interface UserService {
     logout(): void;
 }
 
-export default fakeUserService as UserService;
+export default httpUserService as UserService;

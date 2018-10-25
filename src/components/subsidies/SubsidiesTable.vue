@@ -1,7 +1,7 @@
 <template>
   <section id="subsidies">
     <div id="table-filters">
-        <FilterButtons :filterNames="['OPEN', 'CLOSED', 'PENDING_ACCEPT', 'ALL']" 
+        <FilterButtons :filterNames="Object.keys(SubsidyStatus)" 
           :result-count="filteredData.length"
           @update:selected-filter="onFilterChange" ></FilterButtons>
     </div>
@@ -17,7 +17,7 @@
           </thead>
           <tbody>
             <tr v-for="subsidy in filteredData" :key="subsidy.id"
-            v-bind:class="{ selected: selected === subsidy.id }" @click="selectSubsidy(subsidy.id)" >
+            v-bind:class="{ selected: selected === subsidy.id }" @click="$emit('update:selected', subsidy.id)" >
               <td>{{ subsidy.name }}</td>
               <td>{{ subsidy.account.iban }}</td>
               <td>{{ subsidy.amount }}</td>
@@ -32,6 +32,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Emit } from "vue-property-decorator";
 import { Subsidy } from "@/models/api/subsidy";
+import { SubsidyStatus } from "@/models/subsidy-status";
 
 import FilterButtons from "@/components/FilterButtons.vue";
 
@@ -42,15 +43,14 @@ export default class SubsidiesTable extends Vue {
   @Prop()
   private data!: Subsidy[];
 
-  private selected?: string = "";
+  @Prop()
+  private selected!: string;
 
   private activeFilter: string = "";
   private filteredData = this.data;
 
-  @Emit("update:selected")
-  selectSubsidy(id: string) {
-    this.selected = id;
-  }
+  private SubsidyStatus = SubsidyStatus;
+
 
   onFilterChange(filter: string) {
     if (filter === "ALL") {

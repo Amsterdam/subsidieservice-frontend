@@ -29,3 +29,16 @@ table {
 .pull-left{
     float: left;
 }
+
+image{
+    max-width: 100%;
+}
+
+.invalid{
+    border-left: 2px solid #ec0000;
+    padding-left: 13px;
+}
+
+.invalid .invoer input, .invalid .invoer textarea{
+    box-shadow: inset 0 0 0 1px #ec0000;
+}

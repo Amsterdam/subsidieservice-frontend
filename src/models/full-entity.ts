@@ -4,29 +4,35 @@ import { Transaction } from './api/transaction';
 
 export class FullEntity {
 
-    masterAccount!: string;
+    masterAccount: string;
 
-    recipientName!: string;
+    masterIban: string;
 
-    recipientPhone!: string;
+    recipientName: string;
 
-    recipientIban!: string;
+    recipientPhone: string;
 
-    amount!: number;
+    recipientIban: string;
 
-    masterIban!: string;
+    amount: number;
 
-    description!: string;
+    counterPartyName: string;
 
-    date!: Date
+    counterPartyIban: string;
+
+    description: string;
+
+    date: Date
 
     constructor(masterAccount: MasterAccount, subsidy: Subsidy, transaction: Transaction) {
         this.masterAccount = masterAccount.name || "";
+        this.masterIban = masterAccount.iban || "";
         this.recipientName = subsidy.recipient ? subsidy.recipient.name || "" : "";
         this.recipientPhone = subsidy.recipient ? subsidy.recipient.phone_number || "" : "";
         this.recipientIban = subsidy.account ? subsidy.account.iban || "" : "";
         this.amount = transaction.amount || 0;
-        this.masterIban = masterAccount.iban || "";
+        this.counterPartyName = transaction.counterparty_name || "";
+        this.counterPartyIban = transaction.counterparty_iban || "";
         this.description = transaction.description || "";
         this.date = transaction.timestamp || new Date();
     }

@@ -3,37 +3,40 @@
 
     <h1> Overview page </h1>
     
+    <MasterAccountsCreation v-if="showMasterAccountCreation" @cancel="showMasterAccountCreation=false" @submit="createMasterAccount" ></MasterAccountsCreation>
     <button class="action primary pull-right" @click="exportData">  <span>  Download CSV </span> </button>
-
+    <button class="action primary pull-right" @click="showMasterAccountCreation=true">  <span>  Create Master Account </span> </button>
     <MasterAccountsTable :data="masterAccounts"  @update:selected="onMasterAccountSelection"></MasterAccountsTable>
+
     <p v-if="filteredSubsidies.length == 0"> There are no subisides for this master account </p>
-    
-    <button v-if="selectedMasterAccount" class="action secundary-blue" @click="onConnect" >  <span >  Connect / Invite </span> </button>
+
+    <button v-if="selectedMasterAccount" class="action secundary-blue" @click="createSubsidy" >  <span >  Connect / Invite </span> </button>
     <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
 
     <section id="subsidies" v-if="filteredSubsidies.length > 0">
-      <TabButtons :tab-names="['Subsidies', 'Citizens']" v-bind:selected-tab="selectedTab"  v-on:update:selected-tab="selectedTab = $event" ></TabButtons>
+    <TabButtons :tab-names="['Subsidies', 'Citizens']" :selected-tab="selectedTab"  @update:selected-tab="selectedTab = $event" ></TabButtons>
 
-      <div id="subsidies-tab" v-if="selectedTab === 'Subsidies'">
-        <h2> Subsidies </h2> 
-        <SubsidyCreation v-if="showSubsidyCreation" :citizen="selectedCitizen" :masterAccount="selectedMasterAccount"
-          @success="onConnectSuccess" @cancel="onConnectCanceled">
-        </SubsidyCreation>
+    <div id="subsidies-tab" v-if="selectedTab === 'Subsidies'">
+      <h2> Subsidies </h2> 
+      <SubsidyCreation v-if="showSubsidyCreation" :citizen="selectedCitizen" :masterAccount="selectedMasterAccount"
+        @success="createSubsidySuccess" @cancel="showSubsidyCreation = false">
+      </SubsidyCreation>
 
-        <SubsidiesTable :data="filteredSubsidies" @update:selected="onSubsidySelection" ></SubsidiesTable>
-        <section id="subsidy-details" v-if="!!selectedSubsidy">      
-          <h3>Subsidy Details</h3>
-          <SubsidyDetails :subsidy="selectedSubsidy"> </SubsidyDetails>
-          
-          <h3>Transactions</h3>
-          <TransactionsTable :data="selectedSubsidy.account.transactions"> </TransactionsTable>
-        </section>
-      </div>
+      <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
+      <section id="subsidy-details" v-if="!!selectedSubsidy">      
+        <h3>Subsidy Details</h3>
+        <SubsidyDetails :subsidy="selectedSubsidy"> </SubsidyDetails>
+        
+        <h3>Transactions</h3>
+        <TransactionsTable :data="selectedSubsidy.account.transactions"> </TransactionsTable>
+      </section>
+    </div>
 
-      <div id="citizens-tab" v-if="selectedTab === 'Citizens'">
-        <h2> Citizens </h2>
-        <CitizensTable :data="citizens" @update:selected-id="onCitizenSelection" ></CitizensTable>
-      </div>
+    <div id="citizens-tab" v-if="selectedTab === 'Citizens'">
+      <CitizenCreation v-if="showCitizenCreation" @cancel="showCitizenCreation=false" @submit="createCitizen"  ></CitizenCreation>
+      <button class="action primary pull-right" @click="showCitizenCreation=true">  <span>  Create new </span> </button>
+      <CitizensTable :data="citizens" :selected-id="selectedCitizenId" @update:selected-id="onCitizenSelection" ></CitizensTable>
+    </div>
     </section>
   </div>
 </template>
@@ -44,7 +47,10 @@ import { MasterAccount } from "@/models/api/masterAccount";
 import { Subsidy } from "@/models/api/subsidy";
 import { Citizen } from "@/models/api/citizen";
 
+import MasterAccountsCreation from "@/components/master-accounts/MasterAccountsCreation.vue";
 import MasterAccountsTable from "@/components/master-accounts/MasterAccountsTable.vue";
+
+import CitizenCreation from "@/components/citizen/CitizenCreation.vue";
 import CitizensTable from "@/components/citizen/CitizensTable.vue";
 
 import SubsidiesTable from "@/components/subsidies/SubsidiesTable.vue";
@@ -62,12 +68,18 @@ import subsidyService from "@/services/subsidy/subsidy.service";
 import csvService from "@/services/export/csv.service";
 import exportService from "@/services/export/data-export.service";
 import fileService from "@/services/file/file.service";
+
 import { FullEntity } from "@/models/full-entity";
+import { SubsidyBase } from "@/models/api/subsidyBase";
+import { MasterAccountBase } from "@/models/api/masterAccountBase";
+import { CitizenBase } from "@/models/api/citizenBase";
 
 @Component({
   components: {
     MasterAccountsTable,
+    MasterAccountsCreation,
     CitizensTable,
+    CitizenCreation,
     SubsidiesTable,
     SubsidyDetails,
     SubsidyCreation,
@@ -89,7 +101,10 @@ export default class Dashboard extends Vue {
 
   selectedTab: "Subsidies" | "Citizens" = "Subsidies";
   message?: string = "";
+
   showSubsidyCreation = false;
+  showMasterAccountCreation = false;
+  showCitizenCreation = false;
 
   async mounted() {
     this.masterAccounts = await masterAccountService.getAll();
@@ -106,15 +121,26 @@ export default class Dashboard extends Vue {
     this.selectedCitizen = undefined;
   }
 
+  async createMasterAccount(masterAccount: MasterAccountBase) {
+    try {
+      await masterAccountService.create(masterAccount);
+      this.masterAccounts = await masterAccountService.getAll();
+      this.message = "";
+      this.showMasterAccountCreation = false;
+    } catch (error) {
+      this.message = "Failed to create master account: " + error.message;
+    }
+  }
+
+  get selectedSubsidyId() {
+    return this.selectedSubsidy ? this.selectedSubsidy.id : undefined;
+  }
+
   async onSubsidySelection(id: string) {
     this.selectedSubsidy = await subsidyService.getById(id);
   }
 
-  onCitizenSelection(id: string) {
-    this.selectedCitizen = this.citizens.find(s => s.id === id);
-  }
-
-  onConnect() {
+  async createSubsidy() {
     if (!this.selectedCitizen) {
       this.selectedTab = "Citizens";
       this.message = "Please select a citizen";
@@ -125,15 +151,31 @@ export default class Dashboard extends Vue {
     }
   }
 
-  async onConnectSuccess() {
+  async createSubsidySuccess(result: SubsidyBase) {
+    await subsidyService.create(result);
     this.allSubsidies = await subsidyService.getAll();
     this.filteredSubsidies = [];
     this.selectedMasterAccount = undefined;
     this.showSubsidyCreation = false;
   }
 
-  onConnectCanceled() {
-    this.showSubsidyCreation = false;
+  get selectedCitizenId() {
+    return this.selectedCitizen ? this.selectedCitizen.id : undefined;
+  }
+
+  async createCitizen(citizen: CitizenBase) {
+    try {
+      await citizenService.create(citizen);
+      this.citizens = await citizenService.getAll();
+      this.showCitizenCreation = false;
+      this.message = "";
+    } catch (error) {
+      this.message = "Failed to create ciziten: " + error.message;
+    }
+  }
+
+  onCitizenSelection(id: string) {
+    this.selectedCitizen = this.citizens.find(s => s.id === id);
   }
 
   async exportData() {
@@ -144,13 +186,15 @@ export default class Dashboard extends Vue {
 
     const columnNames: { [x in keyof FullEntity]: string } = {
       masterAccount: "Master Account",
+      masterIban: "Master IBAN",
       recipientName: "Recipient Name",
       recipientPhone: "Recipient Phone",
       recipientIban: "Recipient IBAN",
       amount: "Amount",
-      masterIban: "Master IBAN",
       description: "Description",
-      date: "Date"
+      date: "Date",
+      counterPartyName: "Counterparty Name",
+      counterPartyIban: "Counterparty IBAN"
     };
 
     const csvText = await csvService.getCsvTextAsync(data, columnNames);
