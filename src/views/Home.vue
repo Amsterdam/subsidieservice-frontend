@@ -1,15 +1,17 @@
 <template>
+<div>
+  <div class="home-image"></div>
   <div class="home container">
-    <img src="https://www.iamsterdam.com/media/canals-and-cityscapes/v-t-unesco-emilio-brizzi.jpg?as=false&w=960">
     <h1> Subsidy Service </h1>
   </div>
+</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
-  components: {  },
+  components: {}
 })
 export default class Home extends Vue {}
 </script>

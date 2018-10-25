@@ -30,8 +30,18 @@ table {
     float: left;
 }
 
-image{
+img{
+    width: 100%;
     max-width: 100%;
+}
+
+.home-image{
+    background: url("assets/images/amsterdam.jpg") no-repeat;
+    opacity: 0.8;
+    background-position: center;
+    background-size: unset;
+    height: 350px;
+    width: 100%;
 }
 
 .invalid{
