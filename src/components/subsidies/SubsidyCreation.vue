@@ -32,7 +32,7 @@
           <button class="action primary"> Submit </button>
           <button type="reset" class="action" @click="$emit('cancel')" > Cancel </button>
 
-          <ErrorSummary :errors="[message]"></ErrorSummary>
+          <ErrorSummary v-if="hasErrors" :errors="errors"></ErrorSummary>
           
         </form>
       </div>
@@ -46,7 +46,7 @@ import { MasterAccount } from "@/models/api/masterAccount";
 import { CitizenBase } from "@/models/api/citizenBase";
 import { SubsidyBase } from "@/models/api/subsidyBase";
 
-import ErrorSummary from '@/components/ErrorSummary.vue';
+import ErrorSummary from "@/components/ErrorSummary.vue";
 
 @Component({
   components: { ErrorSummary }
@@ -64,8 +64,6 @@ export default class SubsidyDetails extends Vue {
     comment: ""
   };
 
-  private message: string = "";
-
   private validation: { [key: string]: string } = {};
 
   get hasErrors() {
@@ -73,7 +71,7 @@ export default class SubsidyDetails extends Vue {
   }
 
   get errors() {
-    return Object.values(this.validation);
+    return Object.values(this.validation).filter(err => !!err);
   }
 
   submit() {
@@ -86,7 +84,7 @@ export default class SubsidyDetails extends Vue {
       this.$set(this.validation, "name", undefined);
     }
 
-    if (!this.subsidyData.amount || !isNaN(this.subsidyData.amount)) {
+    if (!this.subsidyData.amount || isNaN(this.subsidyData.amount)) {
       this.$set(this.validation, "amount", "Amount is not correct");
       hasErrors = true;
     } else {
@@ -94,12 +92,14 @@ export default class SubsidyDetails extends Vue {
     }
 
     if (!hasErrors) {
-      this.$emit("submit", this.subsidyData);
+      const result = Object.assign(this.subsidyData, {
+        master: this.masterAccount,
+        recipient: this.citizen,
+        amount: Number(this.subsidyData.amount)
+      });
+
+      this.$emit("submit", result);
     }
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>

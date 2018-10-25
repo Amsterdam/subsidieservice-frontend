@@ -10,7 +10,7 @@
 
     <p v-if="filteredSubsidies.length == 0"> There are no subisides for this master account </p>
 
-    <button v-if="selectedMasterAccount" class="action secundary-blue" @click="createSubsidy" >  <span >  Connect / Invite </span> </button>
+    <button v-if="filteredSubsidies.length > 0" class="action secundary-blue" @click="beginCreateSubsidy" >  <span >  Connect / Invite </span> </button>
     <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
 
     <section id="subsidies" v-if="filteredSubsidies.length > 0">
@@ -19,7 +19,7 @@
     <div id="subsidies-tab" v-if="selectedTab === 'Subsidies'">
       <h2> Subsidies </h2> 
       <SubsidyCreation v-if="showSubsidyCreation" :citizen="selectedCitizen" :masterAccount="selectedMasterAccount"
-        @success="createSubsidySuccess" @cancel="showSubsidyCreation = false">
+        @submit="createSubsidy" @cancel="showSubsidyCreation = false">
       </SubsidyCreation>
 
       <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
@@ -140,10 +140,10 @@ export default class Dashboard extends Vue {
     this.selectedSubsidy = await subsidyService.getById(id);
   }
 
-  async createSubsidy() {
+  async beginCreateSubsidy() {
     if (!this.selectedCitizen) {
       this.selectedTab = "Citizens";
-      this.message = "Please select a citizen";
+      this.message = "Please select a citizen and try again";
     } else {
       this.message = "";
       this.selectedTab = "Subsidies";
@@ -151,7 +151,7 @@ export default class Dashboard extends Vue {
     }
   }
 
-  async createSubsidySuccess(result: SubsidyBase) {
+  async createSubsidy(result: SubsidyBase) {
     await subsidyService.create(result);
     this.allSubsidies = await subsidyService.getAll();
     this.filteredSubsidies = [];
