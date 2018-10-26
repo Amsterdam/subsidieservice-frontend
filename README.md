@@ -26,7 +26,7 @@ npm run lint
 ```
 
 # Connection to backend API
-## Local developme
+## Local development
 To set the endpoint of the API that should be used for feeding the application with data, simply modify the ```.env``` file with the base url of the api
 Example configuration for sending requests to localhost/v1
 ```
