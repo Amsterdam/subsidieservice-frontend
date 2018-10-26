@@ -12,7 +12,7 @@
                 <input type="text" v-model="citizenData.name" placeholder="Name" class="input">
               </div>
             </div>
-          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['name']}">
+          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['email']}">
               <div class="label">
                 <label for="formInput">Email</label>
               </div>
@@ -20,7 +20,7 @@
                 <input v-model="citizenData.email" placeholder="Email" class="input" type="email">
               </div>
           </div>
-          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['name']}">
+          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['phone_number']}">
               <div class="label">
                 <label for="formInput">Phone number</label>
               </div>
@@ -82,13 +82,15 @@ export default class CitizenCreation extends Vue {
       this.$set(this.validation, "email", undefined);
     }
 
-    if (!this.citizenData.phone_number || this.citizenData.phone_number.length !== 10) {
+    if (!this.citizenData.phone_number
+       || this.citizenData.phone_number.length < 10
+       || this.citizenData.phone_number.length > 15
+    ) {
       this.$set(this.validation, "phone_number", "Phone number is not correct");
       hasErrors = true;
     } else {
       this.$set(this.validation, "phone_number", undefined);
     }
-
 
     if (!hasErrors) {
       this.$emit("submit", this.citizenData);
