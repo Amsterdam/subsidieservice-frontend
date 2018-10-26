@@ -28,14 +28,6 @@
                 <input v-model="masterAccountData.iban" placeholder="IBAN" class="input" type="text">
               </div>
           </div>
-          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['balance']}">
-              <div class="label">
-                <label for="formInput">Balance</label>
-              </div>
-              <div class="invoer">
-                <input v-model="masterAccountData.balance" placeholder="Balance" class="input" type="number">
-              </div>
-          </div>
 
           <button class="action primary"> Submit </button>
           <button type="reset" class="action" @click="$emit('cancel')" > Cancel </button>
@@ -59,8 +51,7 @@ export default class MasterAccountsCreation extends Vue {
   private masterAccountData: MasterAccountBase = {
     name: "",
     description: "",
-    iban: "",
-    balance: 0
+    iban: ""
   };
 
   private validation: { [key: string]: string } = {};
@@ -95,17 +86,6 @@ export default class MasterAccountsCreation extends Vue {
       hasErrors = true;
     } else {
       this.$set(this.validation, "iban", undefined);
-    }
-
-    if (
-      !this.masterAccountData.balance ||
-      isNaN(this.masterAccountData.balance)
-    ) {
-      this.$set(this.validation, "balance", "Balance is required");
-      hasErrors = true;
-    } else {
-      this.masterAccountData.balance = Number(this.masterAccountData.balance);
-      this.$set(this.validation, "balance", undefined);
     }
 
     if (!hasErrors) {

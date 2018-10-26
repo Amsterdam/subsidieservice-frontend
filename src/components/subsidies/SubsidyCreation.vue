@@ -4,6 +4,26 @@
     <div class="formulier-section">
       <div class="formshadow">
         <form v-on:submit.prevent="submit">
+      
+          <div class="rij mode_readonly text rij_verplicht">
+              <div class="label">
+                <label for="formInput">Chosen Master Account</label>
+              </div>
+              <div class="invoer">
+                <input type="text" v-model="masterAccount.name" placeholder="Subsidy Name" class="input" disabled>
+              </div>
+          </div>
+
+          <div class="rij mode_readonly text rij_verplicht">
+              <div class="label">
+                <label for="formInput">Chosen Recipient</label>
+              </div>
+              <div class="invoer">
+                <input type="text" v-model="citizen.name" placeholder="Subsidy Name" class="input" disabled>
+              </div>
+          </div>
+          <hr>
+
           <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['name']}">
               <div class="label">
                 <label for="formInput">Subsidy Name</label>
@@ -11,7 +31,8 @@
               <div class="invoer">
                 <input type="text" v-model="subsidyData.name" placeholder="Subsidy Name" class="input">
               </div>
-            </div>
+          </div>
+
           <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['amount']}">
               <div class="label">
                 <label for="formInput">Amount</label>
@@ -93,8 +114,8 @@ export default class SubsidyDetails extends Vue {
 
     if (!hasErrors) {
       const result = Object.assign(this.subsidyData, {
-        master: this.masterAccount,
-        recipient: this.citizen,
+        master: { id: this.masterAccount.id},
+        recipient: { id: this.citizen.id },
         amount: Number(this.subsidyData.amount)
       });
 
@@ -103,3 +124,9 @@ export default class SubsidyDetails extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  hr{
+     margin: 20px 0;
+  }
+</style>
