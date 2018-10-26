@@ -4,7 +4,7 @@ export class FakeUserService implements UserService {
     private KEY_NAME = 'credentials';
 
     async login(user: string, password: string) {
-        if (await Promise.resolve(user === "kalin" && password === "test123")) {
+        if (await Promise.resolve(user === "test" && password === "test123")) {
             sessionStorage.setItem(this.KEY_NAME, btoa(`${user}:${password}`));
             return true;
         } else {

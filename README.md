@@ -57,4 +57,16 @@ By default the nginx is configured to serve static files if the url matches an e
 Ex. GET /js/app.js  will serve the static file.
     GET /not-a-file  will serve the index.html in order to run the Vue Single Page Application
 
-
+# Stub Data
+To change a Real HTTP service to use fake data, simply go to the interface definition of the file
+And change the default export from the real service to a fake one
+For example in user.service.ts change
+``` 
+import httpUserService from './http-user.service';
+export default httpUserService as UserService;
+```
+To:
+``` 
+import fakeUserService from './fake-user.service';
+export default fakeUserService as UserService;
+```
