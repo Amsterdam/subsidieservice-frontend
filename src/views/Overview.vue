@@ -158,11 +158,16 @@ export default class Dashboard extends Vue {
   }
 
   async createSubsidy(result: SubsidyBase) {
-    await subsidyService.create(result);
-    this.allSubsidies = await subsidyService.getAll();
-    this.filteredSubsidies = [];
-    this.selectedMasterAccount = undefined;
-    this.showSubsidyCreation = false;
+    try {
+      await subsidyService.create(result);
+      this.allSubsidies = await subsidyService.getAll();
+      this.filteredSubsidies = [];
+      this.selectedMasterAccount = undefined;
+      this.message = "";
+      this.showSubsidyCreation = false;
+    } catch (error) {
+       this.message = "Failed to create subsidy. " + error.message;
+    }
   }
 
   get selectedCitizenId() {
