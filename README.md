@@ -39,7 +39,7 @@ To set the API url for production builds, refer to the ```.env.production``` fil
 
 # Building the container
 To build the docker container using docker-compose
-```` docker-compose build ```
+``` docker-compose build ```
 
 Running the container is as simple as 
 ``` docker-compose up -d```
