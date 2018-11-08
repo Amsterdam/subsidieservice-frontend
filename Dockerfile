@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # production stage
-FROM nginx:1.15.5-alpine as production-stage
+FROM nginx:1.15.5-alpine
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 COPY --from=build-stage /app/nginx.conf /etc/nginx/conf.d/default.conf
 #/etc/nginx/conf.d/default.conf
