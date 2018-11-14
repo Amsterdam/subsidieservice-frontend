@@ -34,7 +34,7 @@ VUE_APP_API_URL=v1
 ``` 
 
 ## Production configuration (and docker)
-To set the API url for production builds, refer to the ```.env.production``` file
+To set the API url for production builds, creata a ```.env.production``` file; this takes precedence over the ```.env``` file.
 
 
 # Building the container
