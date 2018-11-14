@@ -1,15 +1,10 @@
-version: '3'
+version: "3"
 services:
   subsidy_frontend:
-    image: 'subsidy/frontend'
-    container_name: subsidy_frontend_dev
-    ports:
-      - '8081:80'
     build:
       dockerfile: ./Dockerfile
       context: .
+    ports:
+      - "8081:80"
     environment:
-      ENV:            "develop"
-    env_file:
-      ".env"
-      
+      ENV: "acceptance"
