@@ -1,10 +1,11 @@
-version: "3"
+version: "3.7"
 services:
   subsidy_frontend:
     build:
       dockerfile: ./Dockerfile
       context: .
+      args:
+        VUE_APP_API_URL: "https://acc.subsidieservice.amsterdam.nl/api/v1"
     ports:
       - "8081:80"
-    environment:
-      ENV: "acceptance"
+

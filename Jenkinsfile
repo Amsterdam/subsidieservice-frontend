@@ -16,15 +16,19 @@ def tryStep(String message, Closure block, Closure tearDown = null) {
     }
 }
 
-
 node {
     stage("Checkout") {
         checkout scm
     }
+}
 
-    stage("Build image") {
+node {
+    stage("Build acceptance image") {
         tryStep "build", {
-            def image = docker.build("build.app.amsterdam.nl:5000/cto/subsidieservicefrontend:${env.BUILD_NUMBER}", ".")
+            def image = docker.build("build.app.amsterdam.nl:5000/cto/subsidieservicefrontend:${env.BUILD_NUMBER}",
+                "--shm-size 1G " +
+                "--build-arg VUE_APP_API_URL=https://acc.subsidieservice.amsterdam.nl/api/v1 " +
+                ". ")
             image.push()
         }
     }
@@ -49,10 +53,10 @@ if (BRANCH == "master") {
         stage("Deploy to ACC") {
             tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
-                    parameters: [
-                        [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
-                        [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-subsidieservice-frontend.yml'],
-                    ]
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-subsidieservice-frontend.yml'],
+                ]
             }
         }
     }
@@ -63,10 +67,12 @@ if (BRANCH == "master") {
     }
 
     node {
-        stage('Push production image') {
-            tryStep "image tagging", {
-                def image = docker.image("build.app.amsterdam.nl:5000/cto/subsidieservicefrontend:${env.BUILD_NUMBER}")
-                image.pull()
+        stage("Build and Push Production image") {
+            tryStep "build", {
+                def image = docker.build("build.app.amsterdam.nl:5000/cto/subsidieservicefrontend:${env.BUILD_NUMBER}",
+                    "--shm-size 1G " +
+                    "--build-arg VUE_APP_API_URL=https://subsidieservice.amsterdam.nl/api/v1 " +
+                    ".")
                 image.push("production")
                 image.push("latest")
             }
@@ -77,10 +83,10 @@ if (BRANCH == "master") {
         stage("Deploy") {
             tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
-                    parameters: [
-                        [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
-                        [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-subsidieservice-frontend.yml'],
-                    ]
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-subsidieservice-frontend.yml'],
+                ]
             }
         }
     }
