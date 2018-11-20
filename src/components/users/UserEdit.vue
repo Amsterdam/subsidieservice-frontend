@@ -4,12 +4,12 @@
     <div class="formulier-section">
       <div class="formshadow">
         <form v-on:submit.prevent="submit">
-          <div class="rij mode_input text rij_verplicht">
+          <div class="mode_readonly text rij_verplicht">
               <div class="label">
                 <label for="formInput">Username</label>
               </div>
               <div class="invoer">
-                <input type="text" v-model="username" placeholder="Username" class="input">
+                <input type="text" v-model="username" placeholder="Username" class="input" disabled>
               </div>
             </div>
           <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['password']}">

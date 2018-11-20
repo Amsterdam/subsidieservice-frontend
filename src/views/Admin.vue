@@ -2,9 +2,9 @@
 <section class="container" id="admin-panel">
     <h1> Administration </h1>
     <UsersTable :data="users" @edit="openUserEdit" @delete="deleteUser" > </UsersTable>
-    <button class="action primary" @click="showCreateUser = true">  <span>  Create </span> </button> 
+    <button class="action primary" @click="openUserCreation">  <span>  Create </span> </button> 
 
-     <ErrorSummary v-if="error" :errors="[error]"> </ErrorSummary>
+    <ErrorSummary v-if="error" :errors="[error]"> </ErrorSummary>
 
     <UserEdit v-if="showEditUser" @submit="resetPassword" :username="editedUser.username" @cancel="editedUser = {}" ></UserEdit>
     <UserCreation v-if="showCreateUser" @submit="createUser" @cancel="showCreateUser = false" ></UserCreation> 

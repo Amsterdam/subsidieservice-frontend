@@ -27,7 +27,7 @@
         @submit="createPayment" @cancel="showPaymentCreation = false">
       </PaymentCreation>
 
-      <section id="account-subsidies" v-if="filteredSubsidies">
+      <section id="account-subsidies">
         <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
         <section id="subsidy-details" v-if="!!selectedSubsidy">      
           <h3>Subsidy Details</h3>
