@@ -43,10 +43,6 @@ export default class SubsidiesTable extends Vue {
   @Prop()
   private data!: Subsidy[];
 
-  @Watch("data", { immediate: true })
-  onDataChanged(data: Subsidy[]) {
-    this.filteredData = data; // reset filters
-  }
 
   @Prop()
   private selected!: string;
@@ -55,6 +51,11 @@ export default class SubsidiesTable extends Vue {
   private filteredData = this.data;
 
   private SubsidyStatus = SubsidyStatus;
+
+  @Watch("data", { immediate: true })
+  onDataChanged(data: Subsidy[]) {
+    this.filteredData = data; // reset filters
+  }
 
   onFilterChange(filter: string) {
     if (filter === "ALL") {

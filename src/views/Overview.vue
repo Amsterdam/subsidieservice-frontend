@@ -85,7 +85,7 @@ import { FullEntity } from "@/models/full-entity";
 import { SubsidyBase } from "@/models/api/subsidyBase";
 import { MasterAccountBase } from "@/models/api/masterAccountBase";
 import { CitizenBase } from "@/models/api/citizenBase";
-import { Payment } from '@/models/api/payment';
+import { Payment } from "@/models/api/payment";
 
 @Component({
   components: {
@@ -205,11 +205,11 @@ export default class Dashboard extends Vue {
   }
 
   beginCreatePayment() {
-     this.showPaymentCreation = true;
+    this.showPaymentCreation = true;
   }
 
-  async createPayment(payment: Payment){
-     await paymentService.createPayment(payment);
+  async createPayment(payment: Payment) {
+    await paymentService.createPayment(payment);
   }
 
   async exportData() {
