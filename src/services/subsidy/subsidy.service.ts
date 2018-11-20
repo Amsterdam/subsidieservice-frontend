@@ -5,7 +5,7 @@ import { SubsidyBase } from '@/models/api/subsidyBase';
 import { Subsidy } from '@/models/api/subsidy';
 
 export interface SubsidiesService {
-    getAll(): Promise<SubsidyBase[]>;
+    getAll(initiative?:string): Promise<SubsidyBase[]>;
 
     getById(id: string): Promise<Subsidy>;
 

@@ -9,7 +9,7 @@ export class HttpAccountService  extends HttpServiceBase implements IMasterAccou
         super(userService);
     }
 
-    getAll() {
+    getAll(initiative?:string) {
        return super.get<MasterAccount[]>('/master-accounts');
     }
 

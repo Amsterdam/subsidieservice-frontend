@@ -1,7 +1,7 @@
 <template>
   <div id="overview" class="container">
 
-    <h1> Overview page </h1>
+    <h1> Overview page. Initiative : {{initiative}} </h1>
     
     <MasterAccountsCreation v-if="showMasterAccountCreation" @cancel="showMasterAccountCreation=false" @submit="createMasterAccount" ></MasterAccountsCreation>
     <button class="action primary pull-right" @click="exportData">  <span>  Download CSV </span> </button>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { MasterAccount } from "@/models/api/masterAccount";
 import { Subsidy } from "@/models/api/subsidy";
 import { Citizen } from "@/models/api/citizen";
@@ -86,6 +86,7 @@ import { SubsidyBase } from "@/models/api/subsidyBase";
 import { MasterAccountBase } from "@/models/api/masterAccountBase";
 import { CitizenBase } from "@/models/api/citizenBase";
 import { Payment } from "@/models/api/payment";
+import { Route, RouterMode } from "vue-router";
 
 @Component({
   components: {
@@ -113,6 +114,8 @@ export default class Dashboard extends Vue {
   filteredSubsidies: Subsidy[] = [];
   selectedSubsidy?: Subsidy = {};
 
+  possibleInitiatives: string[] = [];
+  initiative?: string = "";
   selectedTab: "Subsidies" | "Citizens" = "Subsidies";
   message?: string = "";
 
@@ -121,10 +124,22 @@ export default class Dashboard extends Vue {
   showCitizenCreation = false;
   showPaymentCreation = false;
 
+  async setInitiative(initiative: string) {
+    this.initiative = this.$route.params.initiative || "default";
+
+    this.masterAccounts = await masterAccountService.getAll(this.initiative);
+    this.citizens = await citizenService.getAll(this.initiative);
+    this.allSubsidies = await subsidyService.getAll(this.initiative);
+  }
+
   async mounted() {
-    this.masterAccounts = await masterAccountService.getAll();
-    this.citizens = await citizenService.getAll();
-    this.allSubsidies = await subsidyService.getAll();
+    this.possibleInitiatives = [];
+    this.setInitiative(this.$route.params.initiative);
+  }
+
+  @Watch("$route")
+  onRouteChange(from: Route, to: Route) {
+    this.setInitiative(this.$route.params.initiative);
   }
 
   get selectedMasterAccountId() {

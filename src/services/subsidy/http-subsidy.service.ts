@@ -10,7 +10,7 @@ export class HttpSubsidiesService extends HttpServiceBase implements SubsidiesSe
         super(userService);
     }
 
-    getAll() {
+    getAll(initiative?:string) {
         return super.get<SubsidyBase[]>('/subsidies');
     }
 

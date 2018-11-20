@@ -37,7 +37,7 @@ export class FakeCitizenService implements CitizenService {
         },
     ];
 
-    getAll() {
+    getAll(initiative?:string) {
         return Promise.resolve(this.fakeData);
     }
 

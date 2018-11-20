@@ -8,7 +8,7 @@ export class HttpCitizenService extends HttpServiceBase implements CitizenServic
         super(userService);
     }
 
-    getAll() {
+    getAll(initiative?:string) {
         return super.get<Citizen[]>('/citizens');
     }
 

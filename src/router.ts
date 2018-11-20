@@ -16,7 +16,7 @@ const router = new Router({
       component: Login,
     },
     {
-      path: '/overview',
+      path: '/overview/:initiative?',
       name: 'overview',
       component: () => import(/* webpackChunkName: "overview" */  './views/Overview.vue'),
       meta: {
