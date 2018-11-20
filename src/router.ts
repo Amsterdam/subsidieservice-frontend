@@ -24,6 +24,14 @@ const router = new Router({
       }
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import(/* webpackChunkName: "admin" */  './views/Admin.vue'),
+      meta: {
+        requiresAdmin: true
+      }
+    },
+    {
       path: '/',
       name: 'home',
       component: Home,
@@ -40,7 +48,7 @@ router.beforeEach((to, from, next) => {
     }
   } else if (to.matched.some((route) => route.meta.requiresAdmin)) {
     userService.isAdmin().then(isAdmin => {
-      if (isAdmin) {
+      if (!isAdmin) {
         next({ path: '/login', query: { redirect: to.fullPath } });
       } else {
         next();

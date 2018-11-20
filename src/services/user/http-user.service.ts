@@ -1,5 +1,6 @@
 import { UserService } from './user.service';
 import { HttpServiceBase } from '../http.service.base';
+import { CreateUserModel } from '@/models/create-user-model';
 
 export class HttpUserService implements UserService {
 
@@ -36,6 +37,21 @@ export class HttpUserService implements UserService {
         return res.status === 200;
     }
 
+    getAllUsers() {
+        return Promise.reject(new Error("Not implemented yet!"));
+    }
+
+    create(data: CreateUserModel) {
+        return Promise.reject(new Error("Not implemented yet!"));
+    }
+
+    resetPassword(email: string, newPassword: string) {
+        return Promise.reject(new Error("Not implemented yet!"));
+    }
+
+    delete(email: string) {
+        return Promise.reject(new Error("Not implemented yet!"));
+    }
 
     getCredentials() {
         return sessionStorage.getItem(this.KEY_NAME);

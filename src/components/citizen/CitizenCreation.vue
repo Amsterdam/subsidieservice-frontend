@@ -58,34 +58,9 @@ export default class CitizenCreation extends Mixins(ErrorMixin) {
   private message: string = "";
 
   submit() {
-    let hasErrors = false;
+    this.setErrors(this.validate());
 
-    if (!this.citizenData.name) {
-      this.$set(this.validation, "name", "Name is required");
-      hasErrors = true;
-    } else {
-      this.$set(this.validation, "name", undefined);
-    }
-
-    if (!this.citizenData.email) {
-      this.$set(this.validation, "email", "Email is required");
-      hasErrors = true;
-    } else {
-      this.$set(this.validation, "email", undefined);
-    }
-
-    if (
-      !this.citizenData.phone_number ||
-      this.citizenData.phone_number.length < 10 ||
-      this.citizenData.phone_number.length > 15
-    ) {
-      this.$set(this.validation, "phone_number", "Phone number is not correct");
-      hasErrors = true;
-    } else {
-      this.$set(this.validation, "phone_number", undefined);
-    }
-
-    if (!hasErrors) {
+    if (!this.hasErrors) {
       this.$emit("submit", this.citizenData);
     }
   }
