@@ -4,6 +4,8 @@ import httpUserService from './http-user.service';
 export interface UserService {
     login(user: string, password: string): Promise<boolean>;
 
+    isAdmin(): Promise<boolean>;
+
     getCredentials(): string | null;
 
     isLoggedIn(): boolean;

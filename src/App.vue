@@ -6,6 +6,7 @@
           <li> <a @click="$router.push('/')" > <span class="linklabel"> Home </span>  </a>  </li>
           <li v-if="currentUser"> <a @click="$router.push('/overview')" > <span class="linklabel"> Overview </span>  </a>  </li>
           <li v-if="!currentUser"> <a @click="$router.push('/login')" > <span class="linklabel"> Login </span>  </a>  </li>
+          <li v-if="isAdmin"> <a @click="$router.push('/admin')" > <span class="linklabel"> Administration </span>  </a>  </li>
         </ul>
         <ul class="links horizontal">
             <li> {{ currentUser }}  </li>
@@ -31,11 +32,13 @@ import userService from "@/services/user/user.service";
 @Component
 export default class VueApp extends Vue {
   currentUser?: string = undefined;
+  isAdmin: boolean = false;
 
   @Watch("$route", { immediate: true, deep: true })
   onUrlChange(newVal: any) {
     if (userService.isLoggedIn()) {
       this.currentUser = userService.getUserName();
+      userService.isAdmin().then(isAdmin => this.isAdmin = isAdmin);
     } else {
       this.currentUser = undefined;
     }

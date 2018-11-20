@@ -12,6 +12,10 @@ export class FakeUserService implements UserService {
         }
     }
 
+    isAdmin() {
+        return Promise.resolve(this.isLoggedIn());
+    }
+
     getCredentials() {
         return sessionStorage.getItem(this.KEY_NAME);
     }

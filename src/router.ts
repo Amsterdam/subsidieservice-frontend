@@ -1,4 +1,3 @@
-
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
@@ -35,13 +34,18 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   if (to.matched.some((route) => route.meta.requiresAuth)) {
     if (!userService.isLoggedIn()) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      });
+      next({ path: '/login', query: { redirect: to.fullPath } });
     } else {
       next();
     }
+  } else if (to.matched.some((route) => route.meta.requiresAdmin)) {
+    userService.isAdmin().then(isAdmin => {
+      if (isAdmin) {
+        next({ path: '/login', query: { redirect: to.fullPath } });
+      } else {
+        next();
+      }
+    }).catch(err => next({ path: '/login', query: { redirect: to.fullPath } }));
   } else {
     next();
   }

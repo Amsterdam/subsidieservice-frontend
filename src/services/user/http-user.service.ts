@@ -25,6 +25,18 @@ export class HttpUserService implements UserService {
         }
     }
 
+    async isAdmin() {
+        const res = await fetch(`${process.env.VUE_APP_API_URL}/is-admin`, {
+            method: "GET",
+            headers: {
+                Authorization: `Basic ${this.getCredentials()}`
+            }
+        });
+
+        return res.status === 200;
+    }
+
+
     getCredentials() {
         return sessionStorage.getItem(this.KEY_NAME);
     }
