@@ -41,12 +41,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+import { Component, Prop, Vue, Emit, Mixins } from "vue-property-decorator";
 import { CitizenBase } from "@/models/api/citizenBase";
 import ErrorSummary from "@/components/ErrorSummary.vue";
+import ErrorMixin from "@/mixins/ErrorMixin.vue";
+import { ValidationError } from "@/models/validation/validation-error";
 
 @Component({ components: { ErrorSummary } })
-export default class CitizenCreation extends Vue {
+export default class CitizenCreation extends Mixins(ErrorMixin) {
   private citizenData: CitizenBase = {
     name: "",
     email: "",
@@ -54,16 +56,6 @@ export default class CitizenCreation extends Vue {
   };
 
   private message: string = "";
-
-  private validation: { [key: string]: string } = {};
-
-  get hasErrors() {
-    return this.errors.length > 0;
-  }
-
-  get errors() {
-    return Object.values(this.validation).filter(err => !!err);
-  }
 
   submit() {
     let hasErrors = false;
@@ -82,9 +74,10 @@ export default class CitizenCreation extends Vue {
       this.$set(this.validation, "email", undefined);
     }
 
-    if (!this.citizenData.phone_number
-       || this.citizenData.phone_number.length < 10
-       || this.citizenData.phone_number.length > 15
+    if (
+      !this.citizenData.phone_number ||
+      this.citizenData.phone_number.length < 10 ||
+      this.citizenData.phone_number.length > 15
     ) {
       this.$set(this.validation, "phone_number", "Phone number is not correct");
       hasErrors = true;
@@ -94,6 +87,23 @@ export default class CitizenCreation extends Vue {
 
     if (!hasErrors) {
       this.$emit("submit", this.citizenData);
+    }
+  }
+
+  *validate() {
+    if (!this.citizenData.name) {
+      yield new ValidationError("name", "Name is required");
+    }
+    if (!this.citizenData.email) {
+      yield new ValidationError("email", "Email is required");
+    }
+
+    if (
+      !this.citizenData.phone_number ||
+      this.citizenData.phone_number.length < 10 ||
+      this.citizenData.phone_number.length > 15
+    ) {
+      yield new ValidationError("phone_number", "Phone number is not correct");
     }
   }
 }

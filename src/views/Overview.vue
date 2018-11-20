@@ -13,22 +13,32 @@
     <button v-if="selectedMasterAccountId" class="action secundary-blue" @click="beginCreateSubsidy" >  <span >  Connect / Invite </span> </button>
     <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
 
-    <section v-if="selectedMasterAccountId" id="subsidies">
+    <section v-if="selectedMasterAccountId" id="account-data">
     <TabButtons :tab-names="['Subsidies', 'Citizens']" :selected-tab="selectedTab"  @update:selected-tab="selectedTab = $event" ></TabButtons>
 
     <div id="subsidies-tab"  v-if="selectedTab === 'Subsidies'">
       <h2> Subsidies </h2> 
+      
       <SubsidyCreation v-if="showSubsidyCreation" :citizen="selectedCitizen" :masterAccount="selectedMasterAccount"
         @submit="createSubsidy" @cancel="showSubsidyCreation = false">
       </SubsidyCreation>
 
-      <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
-      <section id="subsidy-details" v-if="!!selectedSubsidy">      
-        <h3>Subsidy Details</h3>
-        <SubsidyDetails :subsidy="selectedSubsidy"> </SubsidyDetails>
-        
-        <h3>Transactions</h3>
-        <TransactionsTable v-if="selectedSubsidy.account.transactions" :data="selectedSubsidy.account.transactions"> </TransactionsTable>
+      <PaymentCreation v-if="showPaymentCreation" :subsidy="selectedSubsidy" :masterAccount="selectedMasterAccount"
+        @submit="createPayment" @cancel="showPaymentCreation = false">
+      </PaymentCreation>
+
+      <section id="account-subsidies" v-if="filteredSubsidies">
+        <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
+        <section id="subsidy-details" v-if="!!selectedSubsidy">      
+          <h3>Subsidy Details</h3>
+          <SubsidyDetails :subsidy="selectedSubsidy"> </SubsidyDetails>
+          
+          <h3>Transactions</h3>
+          <button v-if="selectedMasterAccountId && selectedSubsidy" class="action primary pull-right" @click="showPaymentCreation = true" >
+              <span >  Add Payment </span>
+          </button>
+          <TransactionsTable v-if="selectedSubsidy.account.transactions" :data="selectedSubsidy.account.transactions"> </TransactionsTable>
+        </section>
       </section>
     </div>
 
@@ -57,6 +67,7 @@ import SubsidiesTable from "@/components/subsidies/SubsidiesTable.vue";
 import SubsidyDetails from "@/components/subsidies/SubsidyDetails.vue";
 import SubsidyCreation from "@/components/subsidies/SubsidyCreation.vue";
 import TransactionsTable from "@/components/subsidies/TransactionsTable.vue";
+import PaymentCreation from "@/components/payment/PaymentCreation.vue";
 
 import TabButtons from "@/components/TabButtons.vue";
 import ErrorSummary from "@/components/ErrorSummary.vue";
@@ -64,6 +75,7 @@ import ErrorSummary from "@/components/ErrorSummary.vue";
 import masterAccountService from "@/services/master-account/master-account.service";
 import citizenService from "@/services/citizen/citizen.service";
 import subsidyService from "@/services/subsidy/subsidy.service";
+import paymentService from "@/services/payment/payment.service";
 
 import csvService from "@/services/export/csv.service";
 import exportService from "@/services/export/data-export.service";
@@ -73,6 +85,7 @@ import { FullEntity } from "@/models/full-entity";
 import { SubsidyBase } from "@/models/api/subsidyBase";
 import { MasterAccountBase } from "@/models/api/masterAccountBase";
 import { CitizenBase } from "@/models/api/citizenBase";
+import { Payment } from '@/models/api/payment';
 
 @Component({
   components: {
@@ -84,6 +97,7 @@ import { CitizenBase } from "@/models/api/citizenBase";
     SubsidyDetails,
     SubsidyCreation,
     TransactionsTable,
+    PaymentCreation,
     TabButtons,
     ErrorSummary
   }
@@ -105,6 +119,7 @@ export default class Dashboard extends Vue {
   showSubsidyCreation = false;
   showMasterAccountCreation = false;
   showCitizenCreation = false;
+  showPaymentCreation = false;
 
   async mounted() {
     this.masterAccounts = await masterAccountService.getAll();
@@ -166,7 +181,7 @@ export default class Dashboard extends Vue {
       this.message = "";
       this.showSubsidyCreation = false;
     } catch (error) {
-       this.message = "Failed to create subsidy. " + error.message;
+      this.message = "Failed to create subsidy. " + error.message;
     }
   }
 
@@ -187,6 +202,14 @@ export default class Dashboard extends Vue {
 
   onCitizenSelection(id: string) {
     this.selectedCitizen = this.citizens.find(s => s.id === id);
+  }
+
+  beginCreatePayment() {
+     this.showPaymentCreation = true;
+  }
+
+  async createPayment(payment: Payment){
+     await paymentService.createPayment(payment);
   }
 
   async exportData() {

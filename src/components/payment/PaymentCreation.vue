@@ -1,6 +1,7 @@
 <template>
-  <div class="container">
-    <h1> Create a subsidy </h1>
+
+<div class="container">
+    <h1> Create a payment </h1>
     <div class="formulier-section">
       <div class="formshadow">
         <form v-on:submit.prevent="submit">
@@ -19,17 +20,17 @@
                 <label for="formInput">Chosen Recipient</label>
               </div>
               <div class="invoer">
-                <input type="text" v-model="citizen.name" class="input" disabled>
+                <input type="text" v-model="subsidy.recipient.name" class="input" disabled>
               </div>
           </div>
           <hr>
 
           <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['name']}">
               <div class="label">
-                <label for="formInput">Subsidy Name</label>
+                <label for="formInput">Payment Name</label>
               </div>
               <div class="invoer">
-                <input type="text" v-model="subsidyData.name" placeholder="Subsidy Name" class="input">
+                <input type="text" v-model="paymentData.name" placeholder="Payment Name" class="input">
               </div>
           </div>
 
@@ -38,7 +39,7 @@
                 <label for="formInput">Amount</label>
               </div>
               <div class="invoer">
-                <input  v-model="subsidyData.amount" placeholder="Amount" class="input" type="text">
+                <input  v-model="paymentData.amount" placeholder="Amount" class="input" type="text">
               </div>
           </div>
           <div class="rij mode_input text rij_verplicht">
@@ -46,7 +47,7 @@
                 <label for="formInput">Comment</label>
               </div>
               <div class="invoer">
-                <input v-model="subsidyData.comment" placeholder="Comment" class="input" type="text">
+                <input v-model="paymentData.comment" placeholder="Comment" class="input" type="text">
               </div>
           </div>
 
@@ -59,42 +60,40 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue, Emit, Mixins } from "vue-property-decorator";
-import { MasterAccount } from "@/models/api/masterAccount";
-import { CitizenBase } from "@/models/api/citizenBase";
-import { SubsidyBase } from "@/models/api/subsidyBase";
 
 import ErrorSummary from "@/components/ErrorSummary.vue";
 import ErrorMixin from "@/mixins/ErrorMixin.vue";
+
+import { CitizenBase } from "@/models/api/citizenBase";
+import { Payment } from "@/models/api/payment";
+import { SubsidyBase } from "@/models/api/subsidyBase";
+import { MasterAccount } from "@/models/api/masterAccount";
 import { ValidationError } from "@/models/validation/validation-error";
 
-@Component({
-  components: { ErrorSummary }
-})
-export default class SubsidyDetails extends Mixins(ErrorMixin) {
+@Component({ components: { ErrorSummary } })
+export default class PaymentCreation extends Mixins(ErrorMixin) {
   @Prop()
-  private citizen!: CitizenBase;
+  private subsidy!: SubsidyBase;
 
   @Prop()
   private masterAccount!: MasterAccount;
 
-  private subsidyData = {
-    name: "",
-    amount: 0,
-    comment: ""
-  };
+  private paymentData: Payment = {};
 
   submit() {
     this.setErrors(this.validate());
 
     if (!this.hasErrors) {
-      const result = Object.assign(this.subsidyData, {
-        master: { id: this.masterAccount.id },
-        recipient: { id: this.citizen.id },
-        amount: Number(this.subsidyData.amount)
+      const result = Object.assign(this.paymentData, {
+        from: this.masterAccount.iban,
+        to: this.subsidy.account!.iban,
+        amount: Number(this.paymentData.amount),
+        comment: this.paymentData.comment
       });
 
       this.$emit("submit", result);
@@ -102,19 +101,13 @@ export default class SubsidyDetails extends Mixins(ErrorMixin) {
   }
 
   *validate() {
-    if (!this.subsidyData.name) {
+    if (!this.paymentData.name) {
       yield new ValidationError("name", "Name is required");
     }
-
-    if (!this.subsidyData.amount || isNaN(this.subsidyData.amount)) {
+    if (!this.paymentData.amount || isNaN(this.paymentData.amount)) {
       yield new ValidationError("amount", "Amount is not correct");
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-hr {
-  margin: 20px 0;
-}
-</style>

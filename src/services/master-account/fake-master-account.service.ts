@@ -7,22 +7,26 @@ export class FakeMasterAccountService implements IMasterAccountService {
         {
             id: "1",
             name: "test",
-            balance: 100
+            balance: 100,
+            iban: 'NL98 7654 3210 1234'
         },
         {
             id: "2",
             name: "test2",
-            balance: 200
+            balance: 200,
+            iban: 'NL98 7654 3210 2341'
         },
         {
             id: "3",
             name: "test3",
-            balance: 300
+            balance: 300,
+            iban: 'NL98 7654 3210 3421'
         },
         {
             id: "4",
             name: "test4",
-            balance: 400
+            balance: 400,
+            iban: 'NL98 7654 3210 4321'
         }
     ];
 

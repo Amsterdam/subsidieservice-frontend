@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from "vue-property-decorator";
+import { Component, Prop, Vue, Emit, Watch } from "vue-property-decorator";
 import { Subsidy } from "@/models/api/subsidy";
 import { SubsidyStatus } from "@/models/subsidy-status";
 
@@ -43,6 +43,11 @@ export default class SubsidiesTable extends Vue {
   @Prop()
   private data!: Subsidy[];
 
+  @Watch("data", { immediate: true })
+  onDataChanged(data: Subsidy[]) {
+    this.filteredData = data; // reset filters
+  }
+
   @Prop()
   private selected!: string;
 
@@ -50,7 +55,6 @@ export default class SubsidiesTable extends Vue {
   private filteredData = this.data;
 
   private SubsidyStatus = SubsidyStatus;
-
 
   onFilterChange(filter: string) {
     if (filter === "ALL") {
