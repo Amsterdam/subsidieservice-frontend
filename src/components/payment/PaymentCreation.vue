@@ -90,8 +90,8 @@ export default class PaymentCreation extends Mixins(ErrorMixin) {
 
     if (!this.hasErrors) {
       const result = Object.assign(this.paymentData, {
-        from: this.masterAccount.iban,
-        to: this.subsidy.account!.iban,
+        from: this.masterAccount.id,
+        to: this.subsidy.id,
         amount: Number(this.paymentData.amount),
         comment: this.paymentData.comment
       });
