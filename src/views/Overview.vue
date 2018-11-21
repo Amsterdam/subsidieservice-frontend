@@ -33,13 +33,14 @@
       <section id="account-subsidies">
         <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
         <section id="subsidy-details" v-if="!!selectedSubsidy">      
+
+          <button v-if="selectedMasterAccountId && selectedSubsidy" class="action primary pull-right" @click="showPaymentCreation = true" >
+              <span> Add Payment </span>
+          </button>
           <h3>Subsidy Details</h3>
           <SubsidyDetails :subsidy="selectedSubsidy"> </SubsidyDetails>
           
           <h3>Transactions</h3>
-          <button v-if="selectedMasterAccountId && selectedSubsidy" class="action primary pull-right" @click="showPaymentCreation = true" >
-              <span >  Add Payment </span>
-          </button>
           <TransactionsTable v-if="selectedSubsidy.account.transactions" :data="selectedSubsidy.account.transactions"> </TransactionsTable>
         </section>
       </section>
