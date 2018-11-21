@@ -4,7 +4,7 @@ import httpCitizenService from './http-citizen.service';
 
 export interface CitizenService {
 
-    getAll(initiative?:string): Promise<Citizen[]>;
+    getAll(initiative?: string): Promise<Citizen[]>;
 
     getById(id: string): Promise<Citizen>;
 

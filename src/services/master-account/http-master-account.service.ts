@@ -3,14 +3,14 @@ import { IMasterAccountService } from './master-account.service';
 import { HttpServiceBase } from '../http.service.base';
 import { UserService } from '../user/user.service';
 
-export class HttpAccountService  extends HttpServiceBase implements IMasterAccountService {
+export class HttpAccountService extends HttpServiceBase implements IMasterAccountService {
 
     constructor(userService?: UserService) {
         super(userService);
     }
 
-    getAll(initiative?:string) {
-       return super.get<MasterAccount[]>('/master-accounts');
+    getAll(initiative?: string) {
+        return super.get<MasterAccount[]>('/master-accounts');
     }
 
     getById(id: string) {

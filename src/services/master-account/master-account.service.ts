@@ -4,7 +4,7 @@ import httpMasterAccountService from './http-master-account.service';
 
 
 export interface IMasterAccountService {
-    getAll(initiative?:string): Promise<MasterAccount[]>;
+    getAll(initiative?: string): Promise<MasterAccount[]>;
 
     getById(id: string): Promise<MasterAccount>;
 

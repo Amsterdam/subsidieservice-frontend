@@ -4,7 +4,10 @@
     <h1> Overview page. Initiative : {{initiative}} </h1>
     
     <MasterAccountsCreation v-if="showMasterAccountCreation" @cancel="showMasterAccountCreation=false" @submit="createMasterAccount" ></MasterAccountsCreation>
-    <button class="action primary pull-right" @click="exportData">  <span>  Download CSV </span> </button>
+   
+    <ExportRequest v-if="showDownloadDialog" @submit="exportData" @cancel="showDownloadDialog=false" ></ExportRequest>
+    <button class="action primary pull-right" @click="showDownloadDialog=true">  <span>  Download CSV </span> </button>
+    
     <button class="action primary pull-right" @click="showMasterAccountCreation=true">  <span>  Create Master Account </span> </button>
     <MasterAccountsTable :data="masterAccounts"  @update:selected="onMasterAccountSelection"></MasterAccountsTable>
 
@@ -69,6 +72,7 @@ import SubsidyCreation from "@/components/subsidies/SubsidyCreation.vue";
 import TransactionsTable from "@/components/subsidies/TransactionsTable.vue";
 import PaymentCreation from "@/components/payment/PaymentCreation.vue";
 
+import ExportRequest from "@/components/export/ExportRequest.vue";
 import TabButtons from "@/components/TabButtons.vue";
 import ErrorSummary from "@/components/ErrorSummary.vue";
 
@@ -87,6 +91,7 @@ import { MasterAccountBase } from "@/models/api/masterAccountBase";
 import { CitizenBase } from "@/models/api/citizenBase";
 import { Payment } from "@/models/api/payment";
 import { Route, RouterMode } from "vue-router";
+import { ExportRequestData } from "@/models/api/exportRequestData";
 
 @Component({
   components: {
@@ -100,6 +105,7 @@ import { Route, RouterMode } from "vue-router";
     TransactionsTable,
     PaymentCreation,
     TabButtons,
+    ExportRequest,
     ErrorSummary
   }
 })
@@ -116,6 +122,7 @@ export default class Dashboard extends Vue {
 
   possibleInitiatives: string[] = [];
   initiative?: string = "";
+
   selectedTab: "Subsidies" | "Citizens" = "Subsidies";
   message?: string = "";
 
@@ -123,6 +130,7 @@ export default class Dashboard extends Vue {
   showMasterAccountCreation = false;
   showCitizenCreation = false;
   showPaymentCreation = false;
+  showDownloadDialog = false;
 
   async setInitiative(initiative: string) {
     this.initiative = this.$route.params.initiative || "default";
@@ -227,7 +235,7 @@ export default class Dashboard extends Vue {
     await paymentService.createPayment(payment);
   }
 
-  async exportData() {
+  async exportData(requestData: ExportRequestData) {
     const data = exportService.combineData(
       this.masterAccounts,
       this.allSubsidies
@@ -246,6 +254,7 @@ export default class Dashboard extends Vue {
       counterPartyIban: "Counterparty IBAN"
     };
 
+    console.log(requestData);
     const csvText = await csvService.getCsvTextAsync(data, columnNames);
     fileService.downloadCsv(csvText, "data.csv");
   }

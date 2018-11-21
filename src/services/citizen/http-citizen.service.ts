@@ -8,7 +8,7 @@ export class HttpCitizenService extends HttpServiceBase implements CitizenServic
         super(userService);
     }
 
-    getAll(initiative?:string) {
+    getAll(initiative?: string) {
         return super.get<Citizen[]>('/citizens');
     }
 
@@ -17,7 +17,7 @@ export class HttpCitizenService extends HttpServiceBase implements CitizenServic
     }
 
     create(citizen: Citizen): Promise<void> {
-     return super.post('/citizens', citizen);
+        return super.post('/citizens', citizen);
     }
 
 }
