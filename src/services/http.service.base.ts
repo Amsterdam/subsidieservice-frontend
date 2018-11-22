@@ -11,7 +11,7 @@ export abstract class HttpServiceBase {
         this.userService = userService || defaultUserService;
     }
 
-    async getData<T>(response: Response) {
+    async readBody<T>(response: Response) {
         const json = await response.json();
         if (response.status >= 400) {
             const error = json as ApiError;
@@ -22,13 +22,17 @@ export abstract class HttpServiceBase {
     }
 
     async get<T>(url: string) {
-        const res = await fetch(this.baseUrl + url, {
+        const res = await this.getRaw(url);
+        return await this.readBody<T>(res);
+    }
+
+    getRaw(url: string) {
+        return fetch(this.baseUrl + url, {
             method: "GET",
             headers: {
                 Authorization: `Basic ${this.userService.getCredentials()}`
             }
         });
-        return await this.getData<T>(res);
     }
 
     async post<T = void>(url: string, data: any) {
@@ -40,6 +44,17 @@ export abstract class HttpServiceBase {
             },
             body: JSON.stringify(data)
         });
-        return await this.getData<T>(res);
+        return await this.readBody<T>(res);
+    }
+
+
+    prepareQueryUrl<T>(route: string, params: T) {
+        let result = route;
+        if (Object.values(params).some(value => !!value)) {
+            result += "?";
+            result += Object.keys(params).map(key => `${key}=${params[key as keyof T]}`).join("&");
+        }
+
+        return result;
     }
 }

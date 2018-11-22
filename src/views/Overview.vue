@@ -83,7 +83,6 @@ import subsidyService from "@/services/subsidy/subsidy.service";
 import paymentService from "@/services/payment/payment.service";
 
 import csvService from "@/services/export/csv.service";
-import exportService from "@/services/export/data-export.service";
 import fileService from "@/services/file/file.service";
 
 import { FullEntity } from "@/models/full-entity";
@@ -237,27 +236,9 @@ export default class Dashboard extends Vue {
   }
 
   async exportData(requestData: ExportRequestData) {
-    const data = exportService.combineData(
-      this.masterAccounts,
-      this.allSubsidies
-    );
-
-    const columnNames: { [x in keyof FullEntity]: string } = {
-      masterAccount: "Master Account",
-      masterIban: "Master IBAN",
-      recipientName: "Recipient Name",
-      recipientPhone: "Recipient Phone",
-      recipientIban: "Recipient IBAN",
-      amount: "Amount",
-      description: "Description",
-      date: "Date",
-      counterPartyName: "Counterparty Name",
-      counterPartyIban: "Counterparty IBAN"
-    };
-
     console.log(requestData);
-    const csvText = await csvService.getCsvTextAsync(data, columnNames);
-    fileService.downloadCsv(csvText, "data.csv");
+    const csvBlob = await csvService.getCsvBlob(requestData);
+    fileService.download(csvBlob, "data.csv");
   }
 }
 </script>

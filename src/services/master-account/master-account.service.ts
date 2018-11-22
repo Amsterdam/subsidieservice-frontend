@@ -3,7 +3,7 @@ import fakeMasterAccountService from './fake-master-account.service';
 import httpMasterAccountService from './http-master-account.service';
 
 
-export interface IMasterAccountService {
+export interface MasterAccountService {
     getAll(initiative?: string): Promise<MasterAccount[]>;
 
     getById(id: string): Promise<MasterAccount>;
@@ -12,4 +12,4 @@ export interface IMasterAccountService {
 }
 
 // Default implementation
-export default fakeMasterAccountService as IMasterAccountService;
+export default fakeMasterAccountService as MasterAccountService;

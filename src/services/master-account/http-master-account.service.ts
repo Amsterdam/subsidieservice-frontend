@@ -1,9 +1,9 @@
 import { MasterAccount } from '@/models/api/masterAccount';
-import { IMasterAccountService } from './master-account.service';
+import { MasterAccountService } from './master-account.service';
 import { HttpServiceBase } from '../http.service.base';
 import { UserService } from '../user/user.service';
 
-export class HttpAccountService extends HttpServiceBase implements IMasterAccountService {
+export class HttpAccountService extends HttpServiceBase implements MasterAccountService {
 
     constructor(userService?: UserService) {
         super(userService);

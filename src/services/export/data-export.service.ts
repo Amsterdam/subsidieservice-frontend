@@ -31,7 +31,7 @@ export class DataExportService {
         }
     }
 
-    groupByMasterId(subsidies: Subsidy[]) {
+    private groupByMasterId(subsidies: Subsidy[]) {
         return subsidies.reduce((resultMap, subsidy) => {
             const master = subsidy.master!.id!;
             if (!resultMap[master]) {

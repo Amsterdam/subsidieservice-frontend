@@ -4,10 +4,6 @@ export interface FileService {
      */
     download(blob: Blob, fileName: string): void;
 
-    /**
-     * Downloads a file as CSV from text in memory
-     */
-    downloadCsv(csvText: string, fileName: string): void;
 }
 
 export class Html5FileService implements FileService {
@@ -18,10 +14,6 @@ export class Html5FileService implements FileService {
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-    }
-
-    downloadCsv(csvText: string, fileName: string) {
-        this.download(new Blob([csvText], { type: 'text/csv' }), fileName);
     }
 }
 

@@ -1,7 +1,7 @@
 import { MasterAccount } from '@/models/api/masterAccount';
-import { IMasterAccountService } from './master-account.service';
+import { MasterAccountService } from './master-account.service';
 
-export class FakeMasterAccountService implements IMasterAccountService {
+export class FakeMasterAccountService implements MasterAccountService {
 
     private fakeData: MasterAccount[] = [
         {
