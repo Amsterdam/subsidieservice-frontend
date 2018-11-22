@@ -8,30 +8,34 @@ export class FakeMasterAccountService implements MasterAccountService {
             id: "1",
             name: "test",
             balance: 100,
-            iban: 'NL98 7654 3210 1234'
+            iban: 'NL98 7654 3210 1234',
+            initiative: "first-init",
         },
         {
             id: "2",
             name: "test2",
             balance: 200,
-            iban: 'NL98 7654 3210 2341'
+            iban: 'NL98 7654 3210 2341',
+            initiative: "first-init",
         },
         {
             id: "3",
             name: "test3",
             balance: 300,
-            iban: 'NL98 7654 3210 3421'
+            iban: 'NL98 7654 3210 3421',
+            initiative: "second-init",
         },
         {
             id: "4",
             name: "test4",
             balance: 400,
-            iban: 'NL98 7654 3210 4321'
+            iban: 'NL98 7654 3210 4321',
+            initiative: "second-init"
         }
     ];
 
-    getAll() {
-        return Promise.resolve(this.fakeData);
+    getAll(initiative?: string) {
+        return Promise.resolve(this.fakeData.filter(i => i.initiative == initiative));
     }
 
     getById(id: string) {

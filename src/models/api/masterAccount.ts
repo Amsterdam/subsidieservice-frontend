@@ -16,4 +16,5 @@ import { MasterAccountBase } from './masterAccountBase';
  * A master-account serves as the source for a specific class of subsidy
  */
 export interface MasterAccount extends MasterAccountBase {
+    initiative?: string;
 }

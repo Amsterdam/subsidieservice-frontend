@@ -1,6 +1,10 @@
 <template>
   <div id="overview" class="container">
 
+    <div id="initiative-buttons">
+      <TabButtons :tab-names="possibleInitiatives" :selected-tab="initiative"  @update:selected-tab="changeInitiative"></TabButtons>
+    </div>
+
     <h1> Overview page. Initiative : {{initiative}} </h1>
     
     <MasterAccountsCreation v-if="showMasterAccountCreation" @cancel="showMasterAccountCreation=false" @submit="createMasterAccount" ></MasterAccountsCreation>
@@ -92,6 +96,7 @@ import { CitizenBase } from "@/models/api/citizenBase";
 import { Payment } from "@/models/api/payment";
 import { Route, RouterMode } from "vue-router";
 import { ExportRequestData } from "@/models/api/exportRequestData";
+import initiativesService from "@/services/initiatives/initiatives.service";
 
 @Component({
   components: {
@@ -132,7 +137,12 @@ export default class Dashboard extends Vue {
   showPaymentCreation = false;
   showDownloadDialog = false;
 
-  async setInitiative(initiative: string) {
+  changeInitiative(initiative: string) {
+    const newRoute = { name: this.$route.name, params: { initiative } };
+    this.$router.push(newRoute);
+  }
+
+  async loadInitiative(initiative: string) {
     this.initiative = this.$route.params.initiative || "default";
 
     this.masterAccounts = await masterAccountService.getAll(this.initiative);
@@ -141,13 +151,13 @@ export default class Dashboard extends Vue {
   }
 
   async mounted() {
-    this.possibleInitiatives = [];
-    this.setInitiative(this.$route.params.initiative);
+    this.possibleInitiatives = await initiativesService.getInitiatives();
+    this.loadInitiative(this.$route.params.initiative);
   }
 
   @Watch("$route")
   onRouteChange(from: Route, to: Route) {
-    this.setInitiative(this.$route.params.initiative);
+    this.loadInitiative(this.$route.params.initiative);
   }
 
   get selectedMasterAccountId() {
@@ -249,3 +259,18 @@ export default class Dashboard extends Vue {
   margin-top: 20px;
 }
 </style>
+
+<style lang="scss">
+#initiative-buttons .tabs li {
+  a {
+    padding: 10px 20px;
+    border-right: 6px solid #bebebe;
+  }
+
+  &.selected a {
+    border-width: 5px;
+    border-color: black;
+  }
+}
+</style>
+
