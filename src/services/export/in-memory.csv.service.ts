@@ -54,10 +54,10 @@ export class InMemoryCsvService implements CsvService {
                 csvContent += this.prepareHeaders(item);
                 headersAdded = true;
             }
-            if (requestData.startDate && item.date < requestData.startDate) {
+            if (requestData.from && item.date < requestData.from) {
                 continue;
             }
-            if (requestData.endDate && item.date > requestData.endDate) {
+            if (requestData.to && item.date > requestData.to) {
                 continue;
             }
             csvContent += Object.values(item).join(this.SEPARATOR_SYMBOL) + "\n";

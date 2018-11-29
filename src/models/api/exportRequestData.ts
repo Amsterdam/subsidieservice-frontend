@@ -1,5 +1,8 @@
 export interface ExportRequestData {
-    startDate?: Date;
 
-    endDate?: Date;
+    /** The start date - no results should be before this date */
+    from?: Date;
+
+    /** The end date - no results should be after this date */
+    to?: Date;
 }

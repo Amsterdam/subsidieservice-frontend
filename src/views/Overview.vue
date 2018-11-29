@@ -143,7 +143,7 @@ export default class Dashboard extends Vue {
   }
 
   async loadInitiative(initiative: string) {
-    this.initiative = this.$route.params.initiative || "default";
+    this.initiative = this.$route.params.initiative || initiativesService.defaultInitiative;
 
     this.masterAccounts = await masterAccountService.getAll(this.initiative);
     this.citizens = await citizenService.getAll(this.initiative);

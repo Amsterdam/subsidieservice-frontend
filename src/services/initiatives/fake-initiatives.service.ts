@@ -3,11 +3,11 @@ import { InitiativesService } from './initiatives.service';
 export class FakeInitiativesService implements InitiativesService {
 
     get defaultInitiative() {
-        return "first-init";
+        return process.env.VUE_APP_DEFAULT_INITIATIVE;
     }
 
     getInitiatives() {
-        const initiatives = ["first-init", "second-init", "third-init", "fourth-init"];
+        const initiatives = [this.defaultInitiative, "second-init", "third-init", "fourth-init"];
         return Promise.resolve(initiatives);
     }
 
