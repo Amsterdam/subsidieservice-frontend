@@ -177,7 +177,7 @@ export default class Dashboard extends Vue {
 
   async createMasterAccount(masterAccount: MasterAccountBase) {
     try {
-      await masterAccountService.create(masterAccount);
+      await masterAccountService.create(Object.assign(masterAccount, {initiative: this.initiative}));
       this.masterAccounts = await masterAccountService.getAll();
       this.message = "";
       this.showMasterAccountCreation = false;

@@ -20,4 +20,6 @@ export interface MasterAccountBase extends AccountBase {
      * The database ID (for use with `GET`)
      */
     id?: string;
+
+    initiative?: string;
 }
