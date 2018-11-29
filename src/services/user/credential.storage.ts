@@ -1,16 +1,18 @@
 export class CredentialStorage {
-    private KEY_NAME = 'credentials';
+    private CREDENTIALS_KEY = 'credentials';
+    private ISADMIN_KEY = 'isadmin';
 
     getCredentials() {
-        return sessionStorage.getItem(this.KEY_NAME);
+        return sessionStorage.getItem(this.CREDENTIALS_KEY);
     }
 
     hasCredentials() {
         return this.getCredentials() != null;
     }
 
-    storeCredentials(user: string, password: string) {
-        sessionStorage.setItem(this.KEY_NAME, btoa(`${user}:${password}`));
+    storeCredentials(user: string, password: string, isAdmin = false) {
+        sessionStorage.setItem(this.CREDENTIALS_KEY, btoa(`${user}:${password}`));
+        sessionStorage.setItem(this.ISADMIN_KEY, isAdmin.toString());
     }
 
     getUserName(): string {
@@ -23,8 +25,13 @@ export class CredentialStorage {
         return username;
     }
 
+    isAdmin(): boolean {
+        const isAdmin = sessionStorage.getItem(this.ISADMIN_KEY);
+        return isAdmin ? Boolean(isAdmin) : false;
+    }
+
     removeCredentials() {
-        sessionStorage.removeItem(this.KEY_NAME);
+        sessionStorage.removeItem(this.CREDENTIALS_KEY);
     }
 }
 
