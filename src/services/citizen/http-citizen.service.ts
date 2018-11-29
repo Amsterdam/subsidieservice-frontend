@@ -1,11 +1,11 @@
 import { HttpServiceBase } from '../http.service.base';
 import { CitizenService } from './citizen.service';
 import { Citizen } from '../../models/api/citizen';
-import { UserService } from '../user/user.service';
+import { CredentialStorage } from '../user/credential.storage';
 
 export class HttpCitizenService extends HttpServiceBase implements CitizenService {
-    constructor(userService?: UserService) {
-        super(userService);
+    constructor(credentialStorage?: CredentialStorage) {
+        super(credentialStorage);
     }
 
     getAll(initiative?: string) {

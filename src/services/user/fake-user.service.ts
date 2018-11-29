@@ -1,14 +1,21 @@
 import { UserService } from './user.service';
 import { CreateUserModel } from '../../models/create-user-model';
-export class FakeUserService implements UserService {
+import defaultCredentials, { CredentialStorage } from './credential.storage';
+import credentialStorage from './credential.storage';
 
-    private KEY_NAME = 'credentials';
+export class FakeUserService implements UserService {
 
     private validUsers: CreateUserModel[] = [{ username: "test", email: "test@test.test", password: "test123" }];
 
+    private credentials: CredentialStorage;
+
+    constructor(credentials?: CredentialStorage) {
+        this.credentials = credentials || defaultCredentials;
+    }
+
     async login(user: string, password: string) {
         if (await Promise.resolve(this.validUsers.some(u => user === u.username && password === u.password))) {
-            sessionStorage.setItem(this.KEY_NAME, btoa(`${user}:${password}`));
+            this.credentials.storeCredentials(user, password);
             return true;
         } else {
             return false;
@@ -33,7 +40,7 @@ export class FakeUserService implements UserService {
         return Promise.resolve();
     }
 
-    delete(username: string) {
+    deleteUser(username: string) {
         this.validUsers = this.validUsers.filter(u => u.username !== username);
         return Promise.resolve();
     }
@@ -42,26 +49,16 @@ export class FakeUserService implements UserService {
         return Promise.resolve(this.isLoggedIn());
     }
 
-    getCredentials() {
-        return sessionStorage.getItem(this.KEY_NAME);
-    }
-
     isLoggedIn() {
-        return this.getCredentials() != null;
+        return credentialStorage.getCredentials() != null;
     }
 
     getUserName() {
-        const credentials = this.getCredentials();
-        if (!credentials) {
-            throw new Error("User not logged in");
-        }
-
-        const username = atob(credentials).split(":").shift() as string;
-        return username;
+        this.credentials.getUserName();
     }
 
     logout() {
-        sessionStorage.removeItem(this.KEY_NAME);
+        this.credentials.removeCredentials();
     }
 }
 

@@ -9,14 +9,14 @@ export class FakeMasterAccountService implements MasterAccountService {
             name: "test",
             balance: 100,
             iban: 'NL98 7654 3210 1234',
-            initiative: "first-init",
+            initiative: "maas",
         },
         {
             id: "2",
             name: "test2",
             balance: 200,
             iban: 'NL98 7654 3210 2341',
-            initiative: "first-init",
+            initiative: "maas",
         },
         {
             id: "3",

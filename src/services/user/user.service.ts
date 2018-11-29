@@ -12,15 +12,11 @@ export interface UserService {
 
     getAllUsers(): Promise<User[]>;
 
-    delete(username: string): Promise<void>;
+    deleteUser(username: string): Promise<void>;
 
     isAdmin(): Promise<boolean>;
 
-    getCredentials(): string | null;
-
     isLoggedIn(): boolean;
-
-    getUserName(): string;
 
     logout(): void;
 }

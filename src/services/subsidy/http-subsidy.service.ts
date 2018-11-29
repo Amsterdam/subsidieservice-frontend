@@ -1,13 +1,13 @@
-import { UserService } from '../user/user.service';
 import { SubsidiesService } from './subsidy.service';
 import { HttpServiceBase } from '../http.service.base';
 import { Subsidy } from '@/models/api/subsidy';
 import { SubsidyBase } from '@/models/api/subsidyBase';
+import { CredentialStorage } from '../user/credential.storage';
 
 export class HttpSubsidiesService extends HttpServiceBase implements SubsidiesService {
 
-    constructor(userService?: UserService) {
-        super(userService);
+    constructor(credentialStorage?: CredentialStorage) {
+        super(credentialStorage);
     }
 
     getAll(initiative?: string) {

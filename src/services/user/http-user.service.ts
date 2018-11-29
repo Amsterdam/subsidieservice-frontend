@@ -1,12 +1,17 @@
 import { UserService } from './user.service';
 import { HttpServiceBase } from '../http.service.base';
 import { CreateUserModel } from '@/models/create-user-model';
+import { User } from '../../models/api/user';
+import { CredentialStorage } from './credential.storage';
 
-export class HttpUserService implements UserService {
-
-    private readonly KEY_NAME = 'credentials';
+export class HttpUserService extends HttpServiceBase implements UserService {
 
     private readonly LOGIN_TEST_URL = `${process.env.VUE_APP_API_URL}/master-accounts`;
+
+
+    constructor(credentials?: CredentialStorage) {
+        super(credentials);
+    }
 
     async login(user: string, password: string) {
         const credentials = btoa(`${user}:${password}`);
@@ -19,7 +24,7 @@ export class HttpUserService implements UserService {
         });
 
         if (res.status < 400) {
-            sessionStorage.setItem(this.KEY_NAME, credentials);
+            this.credentials.storeCredentials(user, password);
             return true;
         } else {
             return false;
@@ -30,49 +35,39 @@ export class HttpUserService implements UserService {
         const res = await fetch(`${process.env.VUE_APP_API_URL}/is-admin`, {
             method: "GET",
             headers: {
-                Authorization: `Basic ${this.getCredentials()}`
+                Authorization: `Basic ${this.credentials.getCredentials()}`
             }
         });
 
         return res.status === 200;
     }
 
-    getAllUsers() {
-        return Promise.reject(new Error("Not implemented yet!"));
+    async getAllUsers() {
+        return super.get<User[]>('/users');
     }
 
     create(data: CreateUserModel) {
-        return Promise.reject(new Error("Not implemented yet!"));
+        return super.post('/users', data);
     }
 
-    resetPassword(email: string, newPassword: string) {
-        return Promise.reject(new Error("Not implemented yet!"));
+    resetPassword(username: string, password: string) {
+        return super.patch(`/users/${username}`, { username, password });
     }
 
-    delete(email: string) {
-        return Promise.reject(new Error("Not implemented yet!"));
-    }
-
-    getCredentials() {
-        return sessionStorage.getItem(this.KEY_NAME);
+    async deleteUser(username: string) {
+        await super.delete<void>(`/users/${username}`);
     }
 
     isLoggedIn() {
-        return this.getCredentials() != null;
+        return this.credentials.hasCredentials();
     }
 
     getUserName() {
-        const credentials = this.getCredentials();
-        if (!credentials) {
-            throw new Error("User not logged in");
-        }
-
-        const username = atob(credentials).split(":").shift() as string;
-        return username;
+        return this.credentials.getUserName();
     }
 
     logout() {
-        sessionStorage.removeItem(this.KEY_NAME);
+        this.credentials.removeCredentials();
     }
 
 }

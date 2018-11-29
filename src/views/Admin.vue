@@ -80,7 +80,7 @@ export default class Admin extends Vue {
   async deleteUser(user: User) {
     try {
       if (user.username) {
-        await userService.delete(user.username);
+        await userService.deleteUser(user.username);
         this.users = await userService.getAllUsers();
         this.error = "";
         throw new Error("asdasd");

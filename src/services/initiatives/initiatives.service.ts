@@ -1,4 +1,5 @@
 import fakeInitiativesService from './fake-initiatives.service';
+import httpInitiativesService from './http-initiatives.service';
 
 export interface InitiativesService {
 

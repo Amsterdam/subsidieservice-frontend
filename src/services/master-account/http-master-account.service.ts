@@ -1,16 +1,17 @@
 import { MasterAccount } from '@/models/api/masterAccount';
 import { MasterAccountService } from './master-account.service';
 import { HttpServiceBase } from '../http.service.base';
-import { UserService } from '../user/user.service';
+import { CredentialStorage } from '../user/credential.storage';
 
 export class HttpAccountService extends HttpServiceBase implements MasterAccountService {
 
-    constructor(userService?: UserService) {
-        super(userService);
+    constructor(credentialStorage?: CredentialStorage) {
+        super(credentialStorage);
     }
 
     getAll(initiative?: string) {
-        return super.get<MasterAccount[]>('/master-accounts');
+        const query = initiative ? `?initiative=${initiative}` : "";
+        return super.get<MasterAccount[]>('/master-accounts' + query);
     }
 
     getById(id: string) {
