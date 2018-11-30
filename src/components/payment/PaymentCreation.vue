@@ -1,66 +1,67 @@
 <template>
-
-<div class="container">
-    <h1> Create a payment </h1>
+  <div class="container">
+    <h1>Create a payment</h1>
     <div class="formulier-section">
       <div class="formshadow">
         <form v-on:submit.prevent="submit">
-      
           <div class="rij mode_readonly text rij_verplicht">
-              <div class="label">
-                <label for="formInput">Chosen Master Account</label>
-              </div>
-              <div class="invoer">
-                <input type="text" v-model="masterAccount.name" class="input" disabled>
-              </div>
+            <div class="label">
+              <label for="formInput">Chosen Master Account</label>
+            </div>
+            <div class="invoer">
+              <input type="text" v-model="masterAccount.name" class="input" disabled>
+            </div>
           </div>
 
           <div class="rij mode_readonly text rij_verplicht">
-              <div class="label">
-                <label for="formInput">Chosen Recipient</label>
-              </div>
-              <div class="invoer">
-                <input type="text" v-model="subsidy.recipient.name" class="input" disabled>
-              </div>
+            <div class="label">
+              <label for="formInput">Chosen Recipient</label>
+            </div>
+            <div class="invoer">
+              <input type="text" v-model="subsidy.recipient.name" class="input" disabled>
+            </div>
           </div>
           <hr>
 
           <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['name']}">
-              <div class="label">
-                <label for="formInput">Payment Name</label>
-              </div>
-              <div class="invoer">
-                <input type="text" v-model="paymentData.name" placeholder="Payment Name" class="input">
-              </div>
+            <div class="label">
+              <label for="formInput">Payment Name</label>
+            </div>
+            <div class="invoer">
+              <input
+                type="text"
+                v-model="paymentData.name"
+                placeholder="Payment Name"
+                class="input"
+              >
+            </div>
           </div>
 
           <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['amount']}">
-              <div class="label">
-                <label for="formInput">Amount</label>
-              </div>
-              <div class="invoer">
-                <input  v-model="paymentData.amount" placeholder="Amount" class="input" type="text">
-              </div>
+            <div class="label">
+              <label for="formInput">Amount</label>
+            </div>
+            <div class="invoer">
+              <input v-model="paymentData.amount" placeholder="Amount" class="input" type="text">
+            </div>
           </div>
           <div class="rij mode_input text rij_verplicht">
-              <div class="label">
-                <label for="formInput">Comment</label>
-              </div>
-              <div class="invoer">
-                <input v-model="paymentData.comment" placeholder="Comment" class="input" type="text">
-              </div>
+            <div class="label">
+              <label for="formInput">Comment</label>
+            </div>
+            <div class="invoer">
+              <input v-model="paymentData.comment" placeholder="Comment" class="input" type="text">
+            </div>
           </div>
 
-          <button class="action primary"> Submit </button>
-          <button type="reset" class="action" @click="$emit('cancel')" > Cancel </button>
+          <button class="action primary">Submit</button>
+          <button type="reset" class="action" @click="$emit('cancel')">Cancel</button>
 
           <ErrorSummary v-if="hasErrors" :errors="errors"></ErrorSummary>
-          
         </form>
       </div>
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -90,8 +91,8 @@ export default class PaymentCreation extends Mixins(ErrorMixin) {
 
     if (!this.hasErrors) {
       const result = Object.assign(this.paymentData, {
-        from: this.masterAccount.id,
-        to: this.subsidy.id,
+        from: { id: this.masterAccount.id },
+        to: { id: this.subsidy.id },
         amount: Number(this.paymentData.amount),
         comment: this.paymentData.comment
       });

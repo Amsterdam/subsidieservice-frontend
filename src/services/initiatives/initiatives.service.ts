@@ -1,11 +1,10 @@
 import fakeInitiativesService from './fake-initiatives.service';
 import httpInitiativesService from './http-initiatives.service';
+import { Initiative } from '../../models/api/initiative';
 
 export interface InitiativesService {
 
-    readonly defaultInitiative: string;
-
-    getInitiatives(): Promise<string[]>;
+    getInitiatives(): Promise<Initiative[]>;
 
 }
 

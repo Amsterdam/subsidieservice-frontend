@@ -1,13 +1,15 @@
 import { InitiativesService } from './initiatives.service';
+import { Initiative } from '../../models/api/initiative';
 
 export class FakeInitiativesService implements InitiativesService {
 
-    get defaultInitiative() {
-        return process.env.VUE_APP_DEFAULT_INITIATIVE;
-    }
-
     getInitiatives() {
-        const initiatives = [this.defaultInitiative, "second-init", "third-init", "fourth-init"];
+        const initiatives: Initiative[] = [
+            { name: "maas", _default: true },
+            { name: "second-init" },
+            { name: "third-init" },
+            { name: "fourth-init" }
+        ];
         return Promise.resolve(initiatives);
     }
 

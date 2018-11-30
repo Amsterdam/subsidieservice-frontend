@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Initiative } from './initiative';
 import { MasterAccountBase } from './masterAccountBase';
 
 
@@ -16,5 +17,4 @@ import { MasterAccountBase } from './masterAccountBase';
  * A master-account serves as the source for a specific class of subsidy
  */
 export interface MasterAccount extends MasterAccountBase {
-    initiative?: string;
 }

@@ -1,60 +1,113 @@
 <template>
   <div id="overview" class="container">
-
     <div id="initiative-buttons">
-      <TabButtons :tab-names="possibleInitiatives" :selected-tab="initiative"  @update:selected-tab="changeInitiative"></TabButtons>
+      <TabButtons
+        :tab-names="possibleInitiatives"
+        :selected-tab="initiative"
+        @update:selected-tab="changeInitiative"
+      ></TabButtons>
     </div>
 
-    <h1> Overview page. Initiative : {{initiative}} </h1>
-    
-    <MasterAccountsCreation v-if="showMasterAccountCreation" @cancel="showMasterAccountCreation=false" @submit="createMasterAccount" ></MasterAccountsCreation>
-   
-    <ExportRequest v-if="showDownloadDialog" @submit="exportData" @cancel="showDownloadDialog=false" ></ExportRequest>
-    <button class="action primary pull-right" @click="showDownloadDialog=true">  <span>  Download CSV </span> </button>
-    
-    <button class="action primary pull-right" @click="showMasterAccountCreation=true">  <span>  Create Master Account </span> </button>
-    <MasterAccountsTable :data="masterAccounts"  @update:selected="onMasterAccountSelection"></MasterAccountsTable>
+    <h1>Overview page. Initiative : {{initiative}}</h1>
 
-    <p v-if="filteredSubsidies.length == 0"> There are no subisides for this master account </p>
+    <MasterAccountsCreation
+      v-if="showMasterAccountCreation"
+      @cancel="showMasterAccountCreation=false"
+      @submit="createMasterAccount"
+    ></MasterAccountsCreation>
 
-    <button v-if="selectedMasterAccountId" class="action secundary-blue" @click="beginCreateSubsidy" >  <span >  Connect / Invite </span> </button>
-    <ErrorSummary v-if="message" :errors="[message]"> </ErrorSummary>
+    <ExportRequest
+      v-if="showDownloadDialog"
+      @submit="exportData"
+      @cancel="showDownloadDialog=false"
+    ></ExportRequest>
+    <button class="action primary pull-right" @click="showDownloadDialog=true">
+      <span>Download CSV</span>
+    </button>
+    
+    <button class="action primary pull-right" @click="showMasterAccountCreation=true">
+      <span>Create Master Account</span>
+    </button>
+    <MasterAccountsTable :data="masterAccounts" @update:selected="onMasterAccountSelection"></MasterAccountsTable>
+
+    <p v-if="filteredSubsidies.length == 0">There are no subisides for this master account</p>
+
+    <button
+      v-if="selectedMasterAccountId"
+      class="action secundary-blue"
+      @click="beginCreateSubsidy"
+    >
+      <span>Connect / Invite</span>
+    </button>
+    <ErrorSummary v-if="message" :errors="[message]"></ErrorSummary>
 
     <section v-if="selectedMasterAccountId" id="account-data">
-    <TabButtons :tab-names="['Subsidies', 'Citizens']" :selected-tab="selectedTab"  @update:selected-tab="selectedTab = $event" ></TabButtons>
+      <TabButtons
+        :tab-names="['Subsidies', 'Citizens']"
+        :selected-tab="selectedTab"
+        @update:selected-tab="selectedTab = $event"
+      ></TabButtons>
 
-    <div id="subsidies-tab"  v-if="selectedTab === 'Subsidies'">
-      <h2> Subsidies </h2> 
-      
-      <SubsidyCreation v-if="showSubsidyCreation" :citizen="selectedCitizen" :masterAccount="selectedMasterAccount"
-        @submit="createSubsidy" @cancel="showSubsidyCreation = false">
-      </SubsidyCreation>
+      <div id="subsidies-tab" v-if="selectedTab === 'Subsidies'">
+        <h2>Subsidies</h2>
 
-      <PaymentCreation v-if="showPaymentCreation" :subsidy="selectedSubsidy" :masterAccount="selectedMasterAccount"
-        @submit="createPayment" @cancel="showPaymentCreation = false">
-      </PaymentCreation>
+        <SubsidyCreation
+          v-if="showSubsidyCreation"
+          :citizen="selectedCitizen"
+          :masterAccount="selectedMasterAccount"
+          @submit="createSubsidy"
+          @cancel="showSubsidyCreation = false"
+        ></SubsidyCreation>
 
-      <section id="account-subsidies">
-        <SubsidiesTable :data="filteredSubsidies" :selected="selectedSubsidyId"  @update:selected="onSubsidySelection" ></SubsidiesTable>
-        <section id="subsidy-details" v-if="!!selectedSubsidy">      
+        <PaymentCreation
+          v-if="showPaymentCreation"
+          :subsidy="selectedSubsidy"
+          :masterAccount="selectedMasterAccount"
+          @submit="createPayment"
+          @cancel="showPaymentCreation = false"
+        ></PaymentCreation>
 
-          <button v-if="selectedMasterAccountId && selectedSubsidy" class="action primary pull-right" @click="showPaymentCreation = true" >
-              <span> Add Payment </span>
-          </button>
-          <h3>Subsidy Details</h3>
-          <SubsidyDetails :subsidy="selectedSubsidy"> </SubsidyDetails>
-          
-          <h3>Transactions</h3>
-          <TransactionsTable v-if="selectedSubsidy.account.transactions" :data="selectedSubsidy.account.transactions"> </TransactionsTable>
+        <section id="account-subsidies">
+          <SubsidiesTable
+            :data="filteredSubsidies"
+            :selected="selectedSubsidyId"
+            @update:selected="onSubsidySelection"
+          ></SubsidiesTable>
+          <section id="subsidy-details" v-if="!!selectedSubsidy">
+            <button
+              v-if="selectedMasterAccountId && selectedSubsidy"
+              class="action primary pull-right"
+              @click="showPaymentCreation = true"
+            >
+              <span>Add Payment</span>
+            </button>
+            <h3>Subsidy Details</h3>
+            <SubsidyDetails :subsidy="selectedSubsidy"></SubsidyDetails>
+
+            <h3>Transactions</h3>
+            <TransactionsTable
+              v-if="selectedSubsidy.account.transactions"
+              :data="selectedSubsidy.account.transactions"
+            ></TransactionsTable>
+          </section>
         </section>
-      </section>
-    </div>
+      </div>
 
-    <div id="citizens-tab" v-if="selectedTab === 'Citizens'">
-      <CitizenCreation v-if="showCitizenCreation" @cancel="showCitizenCreation=false" @submit="createCitizen"  ></CitizenCreation>
-      <button class="action primary pull-right" @click="showCitizenCreation=true">  <span>  Create new </span> </button>
-      <CitizensTable :data="citizens" :selected-id="selectedCitizenId" @update:selected-id="onCitizenSelection" ></CitizensTable>
-    </div>
+      <div id="citizens-tab" v-if="selectedTab === 'Citizens'">
+        <CitizenCreation
+          v-if="showCitizenCreation"
+          @cancel="showCitizenCreation=false"
+          @submit="createCitizen"
+        ></CitizenCreation>
+        <button class="action primary pull-right" @click="showCitizenCreation=true">
+          <span>Create new</span>
+        </button>
+        <CitizensTable
+          :data="citizens"
+          :selected-id="selectedCitizenId"
+          @update:selected-id="onCitizenSelection"
+        ></CitizensTable>
+      </div>
     </section>
   </div>
 </template>
@@ -143,7 +196,7 @@ export default class Dashboard extends Vue {
   }
 
   async loadInitiative(initiative: string) {
-    this.initiative = this.$route.params.initiative || initiativesService.defaultInitiative;
+    this.initiative = initiative;
 
     this.masterAccounts = await masterAccountService.getAll(this.initiative);
     this.citizens = await citizenService.getAll(this.initiative);
@@ -151,8 +204,11 @@ export default class Dashboard extends Vue {
   }
 
   async mounted() {
-    this.possibleInitiatives = await initiativesService.getInitiatives();
-    this.loadInitiative(this.$route.params.initiative);
+    const initiatives = await initiativesService.getInitiatives();
+    const defaultInitiative = initiatives.find(i => i._default === true)!.name!;
+
+    this.possibleInitiatives = initiatives.map(i => i.name!);
+    this.loadInitiative(this.$route.params.initiative || defaultInitiative);
   }
 
   @Watch("$route")
@@ -177,7 +233,9 @@ export default class Dashboard extends Vue {
 
   async createMasterAccount(masterAccount: MasterAccountBase) {
     try {
-      await masterAccountService.create(Object.assign(masterAccount, {initiative: this.initiative}));
+      await masterAccountService.create(
+        Object.assign(masterAccount, { initiative: this.initiative })
+      );
       this.masterAccounts = await masterAccountService.getAll();
       this.message = "";
       this.showMasterAccountCreation = false;

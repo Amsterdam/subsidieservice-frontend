@@ -9,17 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { AccountBase } from './accountBase';
-import { Initiative } from './initiative';
 
 
-/**
- * A master-account-base serves as the source for a specific class of subsidy
- */
-export interface MasterAccountBase extends AccountBase {
-    /**
-     * The database ID (for use with `GET`)
-     */
-    id?: string;
-    initiative?: Initiative;
+export interface Initiative {
+    name?: string;
+    _default?: boolean;
 }
