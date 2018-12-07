@@ -1,14 +1,21 @@
 <template>
-<section class="container" id="admin-panel">
-    <h1> Administration </h1>
-    <UsersTable :data="users" @edit="openUserEdit" @delete="deleteUser" > </UsersTable>
-    <button class="action primary" @click="openUserCreation">  <span>  Create </span> </button> 
+  <section class="container" id="admin-panel">
+    <h1>Administration</h1>
+    <UsersTable :data="users" @edit="openUserEdit" @delete="deleteUser"></UsersTable>
+    <button class="action primary" @click="openUserCreation">
+      <span>Create</span>
+    </button>
 
-    <ErrorSummary v-if="error" :errors="[error]"> </ErrorSummary>
+    <ErrorSummary v-if="error" :errors="[error]"></ErrorSummary>
 
-    <UserEdit v-if="showEditUser" @submit="resetPassword" :username="editedUser.username" @cancel="editedUser = {}" ></UserEdit>
-    <UserCreation v-if="showCreateUser" @submit="createUser" @cancel="showCreateUser = false" ></UserCreation> 
-</section>
+    <UserEdit
+      v-if="showEditUser"
+      @submit="resetPassword"
+      :username="editedUser.username"
+      @cancel="editedUser = {}"
+    ></UserEdit>
+    <UserCreation v-if="showCreateUser" @submit="createUser" @cancel="showCreateUser = false"></UserCreation>
+  </section>
 </template>
 
 <script lang="ts">
@@ -23,7 +30,7 @@ import UserCreation from "@/components/users/UserCreation.vue";
 import userService from "@/services/user/user.service";
 
 @Component({
-  components: { UsersTable, UserEdit, UserCreation , ErrorSummary}
+  components: { UsersTable, UserEdit, UserCreation, ErrorSummary }
 })
 export default class Admin extends Vue {
   private users: User[] = [];
@@ -72,6 +79,7 @@ export default class Admin extends Vue {
       await userService.create(user);
       this.users = await userService.getAllUsers();
       this.error = "";
+      this.showCreateUser = false;
     } catch (error) {
       this.error = "Failed to create user. Error: " + error.message;
     }
