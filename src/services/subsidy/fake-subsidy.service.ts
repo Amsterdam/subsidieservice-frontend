@@ -122,7 +122,7 @@ export class FakeSubsidiesService implements SubsidiesService {
             status: SubsidyStatus.PENDING_ACCEPT
         }
     ];
-    getAll(initiative?: string) {
+    getAll() {
         return Promise.resolve(this.fakeData);
     }
 
