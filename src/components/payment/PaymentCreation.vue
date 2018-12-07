@@ -107,6 +107,11 @@ export default class PaymentCreation extends Mixins(ErrorMixin) {
     }
     if (!this.paymentData.amount || isNaN(this.paymentData.amount)) {
       yield new ValidationError("amount", "Amount is not correct");
+    } else if (
+      !isNaN(this.paymentData.amount) &&
+      Number(this.paymentData.amount) > 500
+    ) {
+      yield new ValidationError("amount", "Amount cannot be larger than 500");
     }
   }
 }
