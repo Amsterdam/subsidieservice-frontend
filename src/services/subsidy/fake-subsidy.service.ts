@@ -16,7 +16,7 @@ export class FakeSubsidiesService implements SubsidiesService {
                 id: "4",
                 name: "test4",
                 email: "test-guy4@test.com",
-                phone_number: "+31 20 123 45 67"
+                phoneNumber: "+31 20 123 45 67"
             },
             frequency: "",
             amount: 300,
@@ -27,14 +27,14 @@ export class FakeSubsidiesService implements SubsidiesService {
                 transactions: [
                     {
                         amount: 30,
-                        counterparty_name: "test",
-                        counterparty_iban: "test",
+                        counterpartyName: "test",
+                        counterpartyIban: "test",
                         description: "money transfer"
                     },
                     {
                         amount: 60,
-                        counterparty_name: "tes2t",
-                        counterparty_iban: "test2",
+                        counterpartyName: "tes2t",
+                        counterpartyIban: "test2",
                         description: "money transfer"
                     }
                 ]
@@ -52,7 +52,7 @@ export class FakeSubsidiesService implements SubsidiesService {
                 id: "4",
                 name: "test4",
                 email: "test-guy4@test.com",
-                phone_number: "+31 20 123 45 67"
+                phoneNumber: "+31 20 123 45 67"
             },
             frequency: "",
             amount: 300,
@@ -63,14 +63,14 @@ export class FakeSubsidiesService implements SubsidiesService {
                 transactions: [
                     {
                         amount: 30,
-                        counterparty_name: "test",
-                        counterparty_iban: "test",
+                        counterpartyName: "test",
+                        counterpartyIban: "test",
                         description: "money transfer"
                     },
                     {
                         amount: 60,
-                        counterparty_name: "tes2t",
-                        counterparty_iban: "test2",
+                        counterpartyName: "tes2t",
+                        counterpartyIban: "test2",
                         description: "money transfer"
                     }
                 ]
@@ -88,7 +88,7 @@ export class FakeSubsidiesService implements SubsidiesService {
                 id: "4",
                 name: "test4",
                 email: "test-guy4@test.com",
-                phone_number: "+31 20 123 45 67"
+                phoneNumber: "+31 20 123 45 67"
             },
             frequency: "",
             amount: 300,
@@ -99,14 +99,14 @@ export class FakeSubsidiesService implements SubsidiesService {
                 transactions: [
                     {
                         amount: 30,
-                        counterparty_name: "test",
-                        counterparty_iban: "test",
+                        counterpartyName: "test",
+                        counterpartyIban: "test",
                         description: "money transfer"
                     },
                     {
                         amount: 60,
-                        counterparty_name: "tes2t",
-                        counterparty_iban: "test2",
+                        counterpartyName: "tes2t",
+                        counterpartyIban: "test2",
                         description: "money transfer"
                     }
                 ]

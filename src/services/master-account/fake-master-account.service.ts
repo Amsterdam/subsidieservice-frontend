@@ -35,7 +35,11 @@ export class FakeMasterAccountService implements MasterAccountService {
     ];
 
     getAll(initiative?: string) {
-        return Promise.resolve(this.fakeData.filter(m => m.initiative!.name === initiative));
+        if (!initiative) {
+            return Promise.resolve(this.fakeData);
+        } else {
+            return Promise.resolve(this.fakeData.filter(m => m.initiative!.name === initiative));
+        }
     }
 
     getById(id: string) {

@@ -20,12 +20,12 @@
                 <input v-model="citizenData.email" placeholder="Email" class="input" type="email">
               </div>
           </div>
-          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['phone_number']}">
+          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['phoneNumber']}">
               <div class="label">
                 <label for="formInput">Phone number</label>
               </div>
               <div class="invoer">
-                <input v-model="citizenData.phone_number" placeholder="Phone number" class="input" type="text">
+                <input v-model="citizenData.phoneNumber" placeholder="Phone number" class="input" type="text">
               </div>
           </div>
 
@@ -52,7 +52,7 @@ export default class CitizenCreation extends Mixins(ErrorMixin) {
   private citizenData: CitizenBase = {
     name: "",
     email: "",
-    phone_number: ""
+    phoneNumber: ""
   };
 
   private message: string = "";
@@ -74,11 +74,11 @@ export default class CitizenCreation extends Mixins(ErrorMixin) {
     }
 
     if (
-      !this.citizenData.phone_number ||
-      this.citizenData.phone_number.length < 10 ||
-      this.citizenData.phone_number.length > 15
+      !this.citizenData.phoneNumber ||
+      this.citizenData.phoneNumber.length < 10 ||
+      this.citizenData.phoneNumber.length > 15
     ) {
-      yield new ValidationError("phone_number", "Phone number is not correct");
+      yield new ValidationError("phoneNumber", "Phone number is not correct");
     }
   }
 }
