@@ -1,25 +1,30 @@
 <template>
   <div>
     <table class="row-selection">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>IBAN</th>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Timestamp</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="transaction in data" :key="transaction.id">
-              <td>{{ transaction.counterparty_name }}</td>
-              <td>{{ transaction.counterparty_iban }}</td>
-              <td>{{ transaction.description }}</td>
-              <td>{{ transaction.amount }}</td>
-              <td>{{ transaction.timestamp }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>IBAN</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="transaction in data" :key="transaction.id">
+          <td>{{ transaction.counterpartyName }}</td>
+          <td>{{ transaction.counterpartyIban }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>{{ transaction.amount }}</td>
+          <td>
+            <span v-if="transaction.timestamp">
+              {{ transaction.timestamp.toLocaleDateString('nl') }}
+              {{ transaction.timestamp.toLocaleTimeString('nl') }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -31,7 +36,6 @@ import { Transaction } from "@/models/api/transaction";
 export default class TransactionsTable extends Vue {
   @Prop()
   private data!: Transaction[];
-
 }
 </script>
 

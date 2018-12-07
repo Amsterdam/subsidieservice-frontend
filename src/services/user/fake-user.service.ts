@@ -18,7 +18,6 @@ export class FakeUserService implements UserService {
 
         if (foundUser) {
             this.credentials.storeCredentials(user, password, foundUser.isAdmin);
-            console.log(foundUser);
             return Promise.resolve(true);
         } else {
             return Promise.resolve(false);

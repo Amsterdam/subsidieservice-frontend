@@ -15,7 +15,7 @@
             @click="$emit('update:selected-id', citizen.id)">
           <td>{{ citizen.name }}</td>
           <td>{{ citizen.email }}</td>
-          <td>{{ citizen.phone_number }}</td>
+          <td>{{ citizen.phoneNumber }}</td>
         </tr>
       </tbody>
   </table>

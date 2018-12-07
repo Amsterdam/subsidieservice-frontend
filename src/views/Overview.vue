@@ -305,7 +305,6 @@ export default class Dashboard extends Vue {
   }
 
   async exportData(requestData: ExportRequestData) {
-    console.log(requestData);
     const csvBlob = await csvService.getCsvBlob(requestData);
     fileService.download(csvBlob, "data.csv");
   }

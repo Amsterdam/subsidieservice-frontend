@@ -5,7 +5,6 @@ import fakeSubsidyService from '../subsidy/fake-subsidy.service';
 export class FakePaymentService implements PaymentService {
 
     async createPayment(payment: Payment) {
-        console.log({ message: 'created new payment', payment });
         const subsidies = await fakeSubsidyService.getAll();
         subsidies.find(s => s.id === payment.from!.id)!.account!
             .transactions!.push({ amount: payment.amount, counterpartyName: payment.name });

@@ -30,7 +30,8 @@ export class FakeSubsidiesService implements SubsidiesService {
                         amount: 30,
                         counterpartyName: "test",
                         counterpartyIban: "test",
-                        description: "money transfer"
+                        description: "money transfer",
+                        timestamp: new Date('2018-11-25')
                     },
                     {
                         amount: 60,
@@ -67,13 +68,15 @@ export class FakeSubsidiesService implements SubsidiesService {
                         amount: 30,
                         counterpartyName: "test",
                         counterpartyIban: "test",
-                        description: "money transfer"
+                        description: "money transfer",
+                        timestamp: new Date('2018-12-01')
                     },
                     {
                         amount: 60,
                         counterpartyName: "tes2t",
                         counterpartyIban: "test2",
-                        description: "money transfer"
+                        description: "money transfer",
+                        timestamp: new Date('2018-12-05')
                     }
                 ]
             },
@@ -104,13 +107,15 @@ export class FakeSubsidiesService implements SubsidiesService {
                         amount: 30,
                         counterpartyName: "test",
                         counterpartyIban: "test",
-                        description: "money transfer"
+                        description: "money transfer",
+                        timestamp: new Date('2018-12-03')
                     },
                     {
                         amount: 60,
                         counterpartyName: "tes2t",
                         counterpartyIban: "test2",
-                        description: "money transfer"
+                        description: "money transfer",
+                        timestamp: new Date('2018-11-21')
                     }
                 ]
             },
