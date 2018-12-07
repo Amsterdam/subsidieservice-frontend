@@ -7,7 +7,12 @@ export class FakePaymentService implements PaymentService {
     async createPayment(payment: Payment) {
         const subsidies = await fakeSubsidyService.getAll();
         subsidies.find(s => s.id === payment.to!.id)!.account!
-            .transactions!.push({ amount: payment.amount, counterpartyName: payment.name, description: payment.comment, timestamp: new Date() });
+            .transactions!.push({
+                amount: payment.amount,
+                counterpartyName: payment.name,
+                description: payment.comment,
+                timestamp: new Date()
+            });
     }
 }
 
