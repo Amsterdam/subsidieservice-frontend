@@ -1,30 +1,38 @@
 <template>
   <section id="subsidies">
     <div id="table-filters">
-        <FilterButtons :filterNames="Object.keys(SubsidyStatus)" 
-          :result-count="filteredData.length"
-          @update:selected-filter="onFilterChange" ></FilterButtons>
+      <FilterButtons
+        :filterNames="Object.keys(SubsidyStatus)"
+        :result-count="filteredData.length"
+        @update:selected-filter="onFilterChange"
+      ></FilterButtons>
     </div>
     <div id="table-data">
       <table class="row-selection">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>IBAN</th>
-              <th>Amount</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="subsidy in filteredData" :key="subsidy.id"
-            v-bind:class="{ selected: selected === subsidy.id }" @click="$emit('update:selected', subsidy.id)" >
-              <td>{{ subsidy.name }}</td>
-              <td>{{ subsidy.account.iban }}</td>
-              <td>{{ subsidy.amount }}</td>
-              <td>{{ subsidy.status }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>IBAN</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Account balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="subsidy in filteredData"
+            :key="subsidy.id"
+            v-bind:class="{ selected: selected === subsidy.id }"
+            @click="$emit('update:selected', subsidy.id)"
+          >
+            <td>{{ subsidy.name }}</td>
+            <td>{{ subsidy.account.iban }}</td>
+            <td>{{ subsidy.amount }}</td>
+            <td>{{ subsidy.status }}</td>
+            <td>{{ subsidy.account.balance }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </template>
@@ -42,7 +50,6 @@ import FilterButtons from "@/components/FilterButtons.vue";
 export default class SubsidiesTable extends Vue {
   @Prop()
   private data!: Subsidy[];
-
 
   @Prop()
   private selected!: string;

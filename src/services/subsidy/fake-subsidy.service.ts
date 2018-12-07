@@ -1,5 +1,6 @@
 import { Subsidy } from '@/models/api/subsidy';
 import { SubsidiesService } from './subsidy.service';
+import { SubsidyStatus } from '../../models/subsidy-status';
 
 export class FakeSubsidiesService implements SubsidiesService {
 
@@ -21,7 +22,7 @@ export class FakeSubsidiesService implements SubsidiesService {
             frequency: "",
             amount: 300,
             account: {
-                balance: 100,
+                balance: 150,
                 name: "account1",
                 iban: "NL12 3456 7890 1234",
                 transactions: [
@@ -38,7 +39,8 @@ export class FakeSubsidiesService implements SubsidiesService {
                         description: "money transfer"
                     }
                 ]
-            }
+            },
+            status: SubsidyStatus.CLOSED
         },
         {
             id: "2",
@@ -57,7 +59,7 @@ export class FakeSubsidiesService implements SubsidiesService {
             frequency: "",
             amount: 300,
             account: {
-                balance: 100,
+                balance: 220,
                 name: "account1",
                 iban: "NL12 3456 7890 1234",
                 transactions: [
@@ -74,7 +76,8 @@ export class FakeSubsidiesService implements SubsidiesService {
                         description: "money transfer"
                     }
                 ]
-            }
+            },
+            status: SubsidyStatus.OPEN
         },
         {
             id: "3",
@@ -93,7 +96,7 @@ export class FakeSubsidiesService implements SubsidiesService {
             frequency: "",
             amount: 300,
             account: {
-                balance: 100,
+                balance: 350,
                 name: "account2",
                 iban: "NL12 3456 7890 1234",
                 transactions: [
@@ -110,7 +113,8 @@ export class FakeSubsidiesService implements SubsidiesService {
                         description: "money transfer"
                     }
                 ]
-            }
+            },
+            status: SubsidyStatus.PENDING_ACCEPT
         }
     ];
     getAll(initiative?: string) {
