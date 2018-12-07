@@ -10,8 +10,9 @@
 
     <UserEdit
       v-if="showEditUser"
-      @submit="resetPassword"
+      @submit="updateUser"
       :username="editedUser.username"
+      :isAdmin="editedUser.isAdmin"
       @cancel="editedUser = {}"
     ></UserEdit>
     <UserCreation v-if="showCreateUser" @submit="createUser" @cancel="showCreateUser = false"></UserCreation>
@@ -20,7 +21,6 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { CreateUserModel } from "@/models/create-user-model";
 import { User } from "@/models/api/user";
 
 import ErrorSummary from "@/components/ErrorSummary.vue";
@@ -64,9 +64,9 @@ export default class Admin extends Vue {
     this.error = "";
   }
 
-  async resetPassword(user: { username: string; password: string }) {
+  async updateUser(user: { username: string; password: string, isAdmin: boolean }) {
     try {
-      await userService.resetPassword(user.username, user.password);
+      await userService.update(user.username, user.password, user.isAdmin);
       this.editedUser = {};
       this.error = "";
     } catch (error) {
@@ -74,7 +74,7 @@ export default class Admin extends Vue {
     }
   }
 
-  async createUser(user: CreateUserModel) {
+  async createUser(user: User) {
     try {
       await userService.create(user);
       this.users = await userService.getAllUsers();
@@ -91,7 +91,6 @@ export default class Admin extends Vue {
         await userService.deleteUser(user.username);
         this.users = await userService.getAllUsers();
         this.error = "";
-        throw new Error("asdasd");
       }
     } catch (error) {
       this.error = "Failed to delete user. Error: " + error.message;

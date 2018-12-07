@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2> Users </h2>
+    <h2>Users</h2>
     <table>
       <thead>
         <tr>
@@ -8,6 +8,8 @@
           <th>Real Name</th>
           <th>Email</th>
           <th>Phone number</th>
+          <th>Admin</th>
+          <th></th>
           <th></th>
         </tr>
       </thead>
@@ -17,13 +19,20 @@
           <td>{{ user.realName }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phoneNumber }}</td>
-          <td>   
-             <button class="action secundary-blue" @click="$emit('edit', user)">  <span>  Reset Password </span> </button> 
-             <button class="action primary" @click="$emit('delete', user)">  <span>  Delete </span> </button> 
+          <td>
+            <span v-if="user.isAdmin">🗸</span>
+          </td>
+          <td>
+            <button class="action secundary-blue" @click="$emit('edit', user)">
+              <span>Update</span>
+            </button>
+            <button class="action primary" @click="$emit('delete', user)">
+              <span>Delete</span>
+            </button>
           </td>
         </tr>
       </tbody>
-  </table>
+    </table>
   </div>
 </template>
 

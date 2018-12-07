@@ -53,6 +53,10 @@ img{
     box-shadow: inset 0 0 0 1px #ec0000;
 }
 
+.rij.mode_input{
+    margin-bottom:12px;
+}
+
 input[readonly], input[disabled]{
     -webkit-appearance: none;
     -webkit-box-shadow: inset 0 0 0 1px #bebebe;

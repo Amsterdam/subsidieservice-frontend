@@ -27,7 +27,7 @@ export class CredentialStorage {
 
     isAdmin(): boolean {
         const isAdmin = sessionStorage.getItem(this.ISADMIN_KEY);
-        return isAdmin ? Boolean(isAdmin) : false;
+        return isAdmin === "true";
     }
 
     removeCredentials() {

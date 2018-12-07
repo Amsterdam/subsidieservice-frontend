@@ -57,9 +57,10 @@ export default class VueApp extends Vue {
   onUrlChange(newVal: any) {
     if (userService.isLoggedIn()) {
       this.currentUser = credentialStorage.getUserName();
-      userService.isAdmin().then(isAdmin => (this.isAdmin = isAdmin));
+      this.isAdmin = userService.isAdmin();
     } else {
       this.currentUser = undefined;
+      this.isAdmin = false;
     }
   }
 

@@ -47,13 +47,11 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else if (to.matched.some((route) => route.meta.requiresAdmin)) {
-    userService.isAdmin().then(isAdmin => {
-      if (!isAdmin) {
-        next({ path: '/login', query: { redirect: to.fullPath } });
-      } else {
-        next();
-      }
-    }).catch(err => next({ path: '/login', query: { redirect: to.fullPath } }));
+    if (!userService.isAdmin()) {
+      next({ path: '/login', query: { redirect: to.fullPath } });
+    } else {
+      next();
+    }
   } else {
     next();
   }

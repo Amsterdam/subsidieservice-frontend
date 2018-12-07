@@ -1,28 +1,38 @@
 <template>
   <div class="container">
-    <h1> Reset password </h1>
+    <h1>Reset password</h1>
     <div class="formulier-section">
       <div class="formshadow">
         <form v-on:submit.prevent="submit">
           <div class="mode_readonly text rij_verplicht">
-              <div class="label">
-                <label for="formInput">Username</label>
-              </div>
-              <div class="invoer">
-                <input type="text" v-model="username" placeholder="Username" class="input" disabled>
-              </div>
+            <div class="label">
+              <label for="formInput">Username</label>
             </div>
-          <div class="rij mode_input text rij_verplicht" :class="{invalid : validation['password']}">
-              <div class="label">
-                <label for="formInput">Password</label>
-              </div>
-              <div class="invoer">
-                <input v-model="password" placeholder="Password" class="input" type="password">
-              </div>
+            <div class="invoer">
+              <input type="text" v-model="username" placeholder="Username" class="input" disabled>
+            </div>
+          </div>
+          <div
+            class="rij mode_input text rij_verplicht"
+            :class="{invalid : validation['password']}"
+          >
+            <div class="label">
+              <label for="formInput">Password</label>
+            </div>
+            <div class="invoer">
+              <input v-model="password" placeholder="Password" class="input" type="password">
+            </div>
           </div>
 
-          <button class="action primary"> Submit </button>
-          <button type="reset" class="action" @click="$emit('cancel')" > Cancel </button>
+          <div class="rij mode_input checkbox">
+            <div class="invoer">
+              <input type="checkbox" id="isAdminCheckbox" class="input" v-model="isAdminLocal">
+              <label for="isAdminCheckbox">Is admin</label>
+            </div>
+          </div>
+
+          <button class="action primary">Submit</button>
+          <button type="reset" class="action" @click="$emit('cancel')">Cancel</button>
 
           <ErrorSummary v-if="hasErrors" :errors="errors"></ErrorSummary>
         </form>
@@ -32,7 +42,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit, Mixins } from "vue-property-decorator";
+import {
+  Component,
+  Prop,
+  Vue,
+  Emit,
+  Mixins,
+  Watch
+} from "vue-property-decorator";
 import ErrorSummary from "@/components/ErrorSummary.vue";
 import ErrorMixin from "@/mixins/ErrorMixin.vue";
 import { ValidationError } from "@/models/validation/validation-error";
@@ -42,7 +59,17 @@ export default class UserEdit extends Mixins(ErrorMixin) {
   @Prop()
   private username!: string;
 
-  private password: string = "";
+  @Prop()
+  private isAdmin!: boolean;
+
+  private isAdminLocal = false;
+
+  private password = "";
+
+  @Watch("isAdmin", { immediate: true })
+  isAdminChanged(value: boolean) {
+    this.isAdminLocal = value;
+  }
 
   submit() {
     this.setErrors(this.validate());
@@ -50,15 +77,14 @@ export default class UserEdit extends Mixins(ErrorMixin) {
     if (!this.hasErrors) {
       this.$emit("submit", {
         username: this.username,
-        password: this.password
+        password: this.password,
+        isAdmin: this.isAdminLocal
       });
     }
   }
 
   *validate() {
-    if (!this.password) {
-      yield new ValidationError("password", "Password is required");
-    } else if (this.password.length < 6) {
+    if (this.password && this.password.length < 6) {
       yield new ValidationError(
         "password",
         "Password must be at least 6 characters long"

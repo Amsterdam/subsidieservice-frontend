@@ -1,11 +1,11 @@
 import { UserService } from './user.service';
-import { CreateUserModel } from '../../models/create-user-model';
 import defaultCredentials, { CredentialStorage } from './credential.storage';
 import credentialStorage from './credential.storage';
+import { User } from '../../models/api/user';
 
 export class FakeUserService implements UserService {
 
-    private validUsers: CreateUserModel[] = [{ username: "test", email: "test@test.test", password: "test123" }];
+    private validUsers: User[] = [{ username: "test", email: "test@test.test", password: "test123", isAdmin: true }];
 
     private credentials: CredentialStorage;
 
@@ -13,12 +13,15 @@ export class FakeUserService implements UserService {
         this.credentials = credentials || defaultCredentials;
     }
 
-    async login(user: string, password: string) {
-        if (await Promise.resolve(this.validUsers.some(u => user === u.username && password === u.password))) {
-            this.credentials.storeCredentials(user, password);
-            return true;
+    login(user: string, password: string) {
+        const foundUser = this.validUsers.find(u => user === u.username && password === u.password);
+
+        if (foundUser) {
+            this.credentials.storeCredentials(user, password, foundUser.isAdmin);
+            console.log(foundUser);
+            return Promise.resolve(true);
         } else {
-            return false;
+            return Promise.resolve(false);
         }
     }
 
@@ -26,15 +29,18 @@ export class FakeUserService implements UserService {
         return Promise.resolve(this.validUsers);
     }
 
-    create(data: CreateUserModel) {
+    create(data: User) {
         this.validUsers.push(data);
         return Promise.resolve();
     }
 
-    resetPassword(username: string, newPassword: string) {
+    update(username: string, newPassword: string, isAdmin?: boolean) {
         const user = this.validUsers.find(u => u.username === username);
-        if (user) {
+        if (user && newPassword) {
             user.password = newPassword;
+        }
+        if (user && isAdmin !== undefined) {
+            user.isAdmin = isAdmin;
         }
 
         return Promise.resolve();
@@ -46,7 +52,7 @@ export class FakeUserService implements UserService {
     }
 
     isAdmin() {
-        return Promise.resolve(this.isLoggedIn());
+        return this.credentials.isAdmin();
     }
 
     isLoggedIn() {
