@@ -31,15 +31,15 @@ export interface SubsidyBase {
     /**
      * Not yet implemented, value currently ignored
      */
-    startDate?: string;
+    start_date?: string;
     /**
      * Not yet implemented, value currently ignored
      */
-    endDate?: string;
+    end_date?: string;
     comment?: string;
     status?: string;
     /**
      * Time of last refresh in the database
      */
-    lastUpdated?: string;
+    last_updated?: string;
 }

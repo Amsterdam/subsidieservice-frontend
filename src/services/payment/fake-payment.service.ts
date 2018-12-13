@@ -9,7 +9,7 @@ export class FakePaymentService implements PaymentService {
         subsidies.find(s => s.id === payment.to!.id)!.account!
             .transactions!.push({
                 amount: payment.amount,
-                counterpartyName: payment.name,
+                counterparty_name: payment.name,
                 description: payment.comment,
                 timestamp: new Date()
             });

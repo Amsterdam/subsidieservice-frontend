@@ -25,5 +25,5 @@ export interface AccountBase {
     /**
      * Time of last refresh in the database
      */
-    lastUpdated?: string;
+    last_updated?: string;
 }

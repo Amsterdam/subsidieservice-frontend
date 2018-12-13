@@ -16,11 +16,11 @@
       <tbody>
         <tr v-for="user in data" :key="user.id">
           <td>{{ user.username }}</td>
-          <td>{{ user.realName }}</td>
+          <td>{{ user.real_name }}</td>
           <td>{{ user.email }}</td>
-          <td>{{ user.phoneNumber }}</td>
+          <td>{{ user.phone_number }}</td>
           <td>
-            <span v-if="user.isAdmin">🗸</span>
+            <span v-if="user.is_admin">🗸</span>
           </td>
           <td>
             <button class="action secundary-blue" @click="$emit('edit', user)">

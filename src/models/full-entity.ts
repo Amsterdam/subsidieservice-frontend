@@ -28,11 +28,11 @@ export class FullEntity {
         this.masterAccount = masterAccount.name || "";
         this.masterIban = masterAccount.iban || "";
         this.recipientName = subsidy.recipient ? subsidy.recipient.name || "" : "";
-        this.recipientPhone = subsidy.recipient ? subsidy.recipient.phoneNumber || "" : "";
+        this.recipientPhone = subsidy.recipient ? subsidy.recipient.phone_number || "" : "";
         this.recipientIban = subsidy.account ? subsidy.account.iban || "" : "";
         this.amount = transaction.amount || 0;
-        this.counterPartyName = transaction.counterpartyName || "";
-        this.counterPartyIban = transaction.counterpartyIban || "";
+        this.counterPartyName = transaction.counterparty_name || "";
+        this.counterPartyIban = transaction.counterparty_iban || "";
         this.description = transaction.description || "";
         this.date = transaction.timestamp || new Date();
     }

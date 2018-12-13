@@ -5,7 +5,7 @@ import { User } from '../../models/api/user';
 
 export class FakeUserService implements UserService {
 
-    private validUsers: User[] = [{ username: "test", email: "test@test.test", password: "test123", isAdmin: true }];
+    private validUsers: User[] = [{ username: "test", email: "test@test.test", password: "test123", is_admin: true }];
 
     private credentials: CredentialStorage;
 
@@ -17,7 +17,7 @@ export class FakeUserService implements UserService {
         const foundUser = this.validUsers.find(u => user === u.username && password === u.password);
 
         if (foundUser) {
-            this.credentials.storeCredentials(user, password, foundUser.isAdmin);
+            this.credentials.storeCredentials(user, password, foundUser.is_admin);
             return Promise.resolve(true);
         } else {
             return Promise.resolve(false);
@@ -39,7 +39,7 @@ export class FakeUserService implements UserService {
             user.password = newPassword;
         }
         if (user && isAdmin !== undefined) {
-            user.isAdmin = isAdmin;
+            user.is_admin = isAdmin;
         }
 
         return Promise.resolve();

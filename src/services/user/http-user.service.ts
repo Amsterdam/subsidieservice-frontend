@@ -21,7 +21,7 @@ export class HttpUserService extends HttpServiceBase implements UserService {
 
         if (res.status < 400) {
             const data: User = await res.json();
-            this.credentials.storeCredentials(username, password, data.isAdmin);
+            this.credentials.storeCredentials(username, password, data.is_admin);
             return true;
         } else {
             return false;
@@ -37,7 +37,7 @@ export class HttpUserService extends HttpServiceBase implements UserService {
     }
 
     update(username: string, password: string, isAdmin: boolean) {
-        return super.patch(`/users/${username}`, { username, password, isAdmin });
+        return super.patch(`/users/${username}`, { username, password, is_admin: isAdmin });
     }
 
     async deleteUser(username: string) {

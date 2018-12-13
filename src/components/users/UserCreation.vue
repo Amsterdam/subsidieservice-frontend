@@ -39,31 +39,31 @@
 
           <div
             class="rij mode_input text rij_verplicht"
-            :class="{invalid : validation['realname']}"
+            :class="{invalid : validation['real_name']}"
           >
             <div class="label">
               <label for="formInput">Realname</label>
             </div>
             <div class="invoer">
-              <input v-model="user.realName" placeholder="Real name" class="input" type="text">
+              <input v-model="user.real_name" placeholder="Real name" class="input" type="text">
             </div>
           </div>
 
           <div
             class="rij mode_input text rij_verplicht"
-            :class="{invalid : validation['phoneNumber']}"
+            :class="{invalid : validation['phone_number']}"
           >
             <div class="label">
               <label for="formInput">Phone number</label>
             </div>
             <div class="invoer">
-              <input v-model="user.phoneNumber" placeholder="Phone number" class="input" type="tel">
+              <input v-model="user.phone_number" placeholder="Phone number" class="input" type="tel">
             </div>
           </div>
 
           <div class="rij mode_input checkbox">
             <div class="invoer">
-              <input type="checkbox" name id="isAdminCheckbox" class="input" v-model="user.isAdmin" >
+              <input type="checkbox" name id="isAdminCheckbox" class="input" v-model="user.is_admin" >
               <label for="isAdminCheckbox">Is admin</label>
             </div>
           </div>
@@ -90,10 +90,10 @@ export default class UserCreation extends Mixins(ErrorMixin) {
   private user: User = {
     email: "",
     password: "",
-    realName: "",
+    real_name: "",
     username: "",
-    phoneNumber: "",
-    isAdmin: false
+    phone_number: "",
+    is_admin: false
   };
 
   submit() {

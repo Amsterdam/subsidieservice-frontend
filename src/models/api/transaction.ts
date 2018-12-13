@@ -12,8 +12,8 @@
 
 
 export interface Transaction {
-    counterpartyName?: string;
-    counterpartyIban?: string;
+    counterparty_name?: string;
+    counterparty_iban?: string;
     description?: string;
     amount?: number;
     timestamp?: Date;
