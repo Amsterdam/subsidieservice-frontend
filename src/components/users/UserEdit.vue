@@ -9,7 +9,7 @@
               <label for="formInput">Username</label>
             </div>
             <div class="invoer">
-              <input type="text" v-model="username" placeholder="Username" class="input" disabled>
+              <input type="text" v-model="userLocal.username" placeholder="Username" class="input" disabled>
             </div>
           </div>
           <div
@@ -20,13 +20,13 @@
               <label for="formInput">Password</label>
             </div>
             <div class="invoer">
-              <input v-model="password" placeholder="Password" class="input" type="password">
+              <input v-model="userLocal.password" placeholder="Password" class="input" type="password">
             </div>
           </div>
 
           <div class="rij mode_input checkbox">
             <div class="invoer">
-              <input type="checkbox" id="isAdminCheckbox" class="input" v-model="isAdminLocal">
+              <input type="checkbox" id="isAdminCheckbox" class="input" v-model="userLocal.is_admin">
               <label for="isAdminCheckbox">Is admin</label>
             </div>
           </div>
@@ -53,38 +53,30 @@ import {
 import ErrorSummary from "@/components/ErrorSummary.vue";
 import ErrorMixin from "@/mixins/ErrorMixin.vue";
 import { ValidationError } from "@/models/validation/validation-error";
+import { User } from "@/models/api/user";
 
 @Component({ components: { ErrorSummary } })
 export default class UserEdit extends Mixins(ErrorMixin) {
   @Prop()
-  private username!: string;
+  private user!: User;
 
-  @Prop()
-  private isAdmin!: boolean;
+  private userLocal!: User;
 
-  private isAdminLocal = false;
-
-  private password = "";
-
-  @Watch("isAdmin", { immediate: true })
-  isAdminChanged(value: boolean) {
-    this.isAdminLocal = value;
+  @Watch("user", { immediate: true })
+  isAdminChanged(user: User) {
+    this.userLocal = user;
   }
 
   submit() {
     this.setErrors(this.validate());
 
     if (!this.hasErrors) {
-      this.$emit("submit", {
-        username: this.username,
-        password: this.password,
-        isAdmin: this.isAdminLocal
-      });
+      this.$emit("submit", this.userLocal);
     }
   }
 
   *validate() {
-    if (this.password && this.password.length < 6) {
+    if (this.userLocal.password && this.userLocal.password.length < 6) {
       yield new ValidationError(
         "password",
         "Password must be at least 6 characters long"

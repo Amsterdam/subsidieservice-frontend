@@ -11,7 +11,7 @@
     <UserEdit
       v-if="showEditUser"
       @submit="updateUser"
-      :username="editedUser.username"
+      :user="editedUser"
       :isAdmin="editedUser.isAdmin"
       @cancel="editedUser = {}"
     ></UserEdit>
@@ -64,9 +64,9 @@ export default class Admin extends Vue {
     this.error = "";
   }
 
-  async updateUser(user: { username: string; password: string, isAdmin: boolean }) {
+  async updateUser(user: Partial<User>) {
     try {
-      await userService.update(user.username, user.password, user.isAdmin);
+      await userService.update(user.username!, user.password!, user.is_admin!);
       this.editedUser = {};
       this.error = "";
     } catch (error) {

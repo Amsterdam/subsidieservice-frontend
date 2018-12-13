@@ -36,12 +36,12 @@ export class HttpUserService extends HttpServiceBase implements UserService {
         return super.post('/users', data);
     }
 
-    update(username: string, password: string, isAdmin: boolean) {
-        return super.patch(`/users/${username}`, { username, password, is_admin: isAdmin });
+    update(userId: string, password: string, isAdmin: boolean) {
+        return super.patch(`/users/${userId}`, { userId, password, is_admin: isAdmin });
     }
 
-    async deleteUser(username: string) {
-        await super.delete<void>(`/users/${username}`);
+    async deleteUser(userId: string) {
+        await super.delete<void>(`/users/${userId}`);
     }
 
     isLoggedIn() {
