@@ -5,7 +5,7 @@ export class FakeInitiativesService implements InitiativesService {
 
     getInitiatives() {
         const initiatives: Initiative[] = [
-            { name: "maas", _default: true },
+            { name: "maas", default: true },
             { name: "second-init" },
             { name: "third-init" },
             { name: "fourth-init" }
