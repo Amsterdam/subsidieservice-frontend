@@ -12,6 +12,7 @@
 
 
 export interface Initiative {
+    id: string;
     name?: string;
     default?: boolean;
 }

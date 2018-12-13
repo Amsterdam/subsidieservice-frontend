@@ -2,7 +2,7 @@
   <div id="overview" class="container">
     <div id="initiative-buttons">
       <TabButtons
-        :tab-names="possibleInitiatives"
+        :tab-names="initiativeNames"
         :selected-tab="initiative"
         @update:selected-tab="changeInitiative"
       ></TabButtons>
@@ -150,6 +150,7 @@ import { Payment } from "@/models/api/payment";
 import { Route, RouterMode } from "vue-router";
 import { ExportRequestData } from "@/models/api/exportRequestData";
 import initiativesService from "@/services/initiatives/initiatives.service";
+import { Initiative } from '@/models/api/models';
 
 @Component({
   components: {
@@ -178,8 +179,9 @@ export default class Dashboard extends Vue {
   filteredSubsidies: Subsidy[] = [];
   selectedSubsidy?: Subsidy = {};
 
-  possibleInitiatives: string[] = [];
-  initiative?: string = "";
+  initiatives: Initiative[] = [];
+  initiativeNames: string[] = [];
+  initiative?: Initiative;
 
   selectedTab: "Subsidies" | "Citizens" = "Subsidies";
   message?: string = "";
@@ -196,9 +198,9 @@ export default class Dashboard extends Vue {
   }
 
   async loadInitiative(initiative: string) {
-    this.initiative = initiative;
+    this.initiative = this.initiatives.find(i => i.name === initiative);
 
-    this.masterAccounts = await masterAccountService.getAll(this.initiative);
+    this.masterAccounts = await masterAccountService.getAll(this.initiative!.name);
     this.citizens = await citizenService.getAll();
     this.allSubsidies = await subsidyService.getAll();
   }
@@ -207,7 +209,7 @@ export default class Dashboard extends Vue {
     const initiatives = await initiativesService.getInitiatives();
     const defaultInitiative = initiatives.find(i => i.default === true)!.name!;
 
-    this.possibleInitiatives = initiatives.map(i => i.name!);
+    this.initiativeNames = initiatives.map(i => i.name!);
     this.loadInitiative(this.$route.params.initiative || defaultInitiative);
   }
 
