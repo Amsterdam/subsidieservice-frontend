@@ -15,7 +15,8 @@ export class HttpUserService extends HttpServiceBase implements UserService {
         const user: User = { username, password };
         const res = await fetch(this.baseUrl + "/login", {
             method: "POST",
-            body: JSON.stringify(user)
+            body: JSON.stringify(user),
+            headers: { "Content-Type": 'application/json' }
         });
 
         if (res.status < 400) {
