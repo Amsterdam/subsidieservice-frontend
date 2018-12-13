@@ -199,8 +199,8 @@ export default class Dashboard extends Vue {
     this.initiative = initiative;
 
     this.masterAccounts = await masterAccountService.getAll(this.initiative);
-    this.citizens = await citizenService.getAll(this.initiative);
-    this.allSubsidies = await subsidyService.getAll(this.initiative);
+    this.citizens = await citizenService.getAll();
+    this.allSubsidies = await subsidyService.getAll();
   }
 
   async mounted() {
