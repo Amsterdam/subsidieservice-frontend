@@ -20,4 +20,4 @@ export interface UserService {
     logout(): void;
 }
 
-export default fakeUserService as UserService;
+export default httpUserService as UserService;

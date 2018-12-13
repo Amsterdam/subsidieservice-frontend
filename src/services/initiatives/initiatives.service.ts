@@ -8,4 +8,4 @@ export interface InitiativesService {
 
 }
 
-export default fakeInitiativesService as InitiativesService;
+export default httpInitiativesService as InitiativesService;

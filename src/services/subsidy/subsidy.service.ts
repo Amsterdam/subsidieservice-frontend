@@ -14,4 +14,4 @@ export interface SubsidiesService {
     create(subsidy: SubsidyBase): Promise<void>;
 }
 
-export default fakeSubsidiesService as SubsidiesService;
+export default httpSubsidyService as SubsidiesService;

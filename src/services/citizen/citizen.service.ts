@@ -12,4 +12,4 @@ export interface CitizenService {
 
 }
 
-export default fakeCitizensService as CitizenService;
+export default httpCitizenService as CitizenService;

@@ -12,4 +12,4 @@ export interface MasterAccountService {
 }
 
 // Default implementation
-export default fakeMasterAccountService as MasterAccountService;
+export default httpMasterAccountService as MasterAccountService;

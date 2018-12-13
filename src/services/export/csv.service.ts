@@ -8,4 +8,4 @@ export interface CsvService {
     getCsvBlob(requestData: ExportRequestData): Promise<Blob>;
 }
 
-export default inMemoryCsvService as CsvService;
+export default httpCsvService as CsvService;
