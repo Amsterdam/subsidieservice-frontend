@@ -205,7 +205,7 @@ export default class Dashboard extends Vue {
 
   async mounted() {
     const initiatives = await initiativesService.getInitiatives();
-    const defaultInitiative = initiatives.find(i => i._default === true)!.name!;
+    const defaultInitiative = initiatives.find(i => i.default === true)!.name!;
 
     this.possibleInitiatives = initiatives.map(i => i.name!);
     this.loadInitiative(this.$route.params.initiative || defaultInitiative);
