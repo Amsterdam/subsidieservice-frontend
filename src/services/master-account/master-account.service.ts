@@ -11,5 +11,7 @@ export interface MasterAccountService {
     create(account: MasterAccount): Promise<void>;
 }
 
+
 // Default implementation
-export default httpMasterAccountService as MasterAccountService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? fakeMasterAccountService : httpMasterAccountService;
+export default defaultService as MasterAccountService;

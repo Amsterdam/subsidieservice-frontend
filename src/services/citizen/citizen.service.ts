@@ -12,4 +12,5 @@ export interface CitizenService {
 
 }
 
-export default httpCitizenService as CitizenService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? fakeCitizensService : httpCitizenService;
+export default defaultService as CitizenService;

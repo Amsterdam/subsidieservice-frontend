@@ -20,4 +20,5 @@ export interface UserService {
     logout(): void;
 }
 
-export default httpUserService as UserService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? fakeUserService : httpUserService;
+export default defaultService as UserService;

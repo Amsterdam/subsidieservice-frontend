@@ -14,4 +14,5 @@ export interface SubsidiesService {
     create(subsidy: SubsidyBase): Promise<void>;
 }
 
-export default httpSubsidyService as SubsidiesService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? fakeSubsidiesService : httpSubsidyService;
+export default defaultService as SubsidiesService;

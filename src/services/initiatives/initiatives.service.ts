@@ -8,4 +8,5 @@ export interface InitiativesService {
 
 }
 
-export default httpInitiativesService as InitiativesService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? fakeInitiativesService : httpInitiativesService;
+export default defaultService as InitiativesService;

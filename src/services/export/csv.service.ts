@@ -8,4 +8,5 @@ export interface CsvService {
     getCsvBlob(requestData: ExportRequestData): Promise<Blob>;
 }
 
-export default httpCsvService as CsvService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? inMemoryCsvService : httpCsvService;
+export default defaultService as CsvService;

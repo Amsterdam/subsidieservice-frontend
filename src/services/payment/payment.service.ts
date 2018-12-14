@@ -6,4 +6,5 @@ export interface PaymentService {
     createPayment(payment: Payment): Promise<void>;
 }
 
-export default httpPaymentService as PaymentService;
+const defaultService = process.env.VUE_APP_USE_STUBS === "true" ? fakePaymentService : httpPaymentService;
+export default defaultService as PaymentService;
