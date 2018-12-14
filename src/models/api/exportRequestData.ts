@@ -5,4 +5,6 @@ export interface ExportRequestData {
 
     /** The end date - no results should be after this date */
     to?: Date;
+
+    initiative?: string;
 }

@@ -3,12 +3,12 @@
     <div id="initiative-buttons">
       <TabButtons
         :tab-names="initiativeNames"
-        :selected-tab="initiative"
+        :selected-tab="initiative.name"
         @update:selected-tab="changeInitiative"
       ></TabButtons>
     </div>
 
-    <h1>Overview page. Initiative : {{initiative}}</h1>
+    <h1>Overview page. Initiative : {{initiative.name}}</h1>
 
     <MasterAccountsCreation
       v-if="showMasterAccountCreation"
@@ -18,6 +18,7 @@
 
     <ExportRequest
       v-if="showDownloadDialog"
+      :initiative-name="initiative.name"
       @submit="exportData"
       @cancel="showDownloadDialog=false"
     ></ExportRequest>
@@ -150,7 +151,7 @@ import { Payment } from "@/models/api/payment";
 import { Route, RouterMode } from "vue-router";
 import { ExportRequestData } from "@/models/api/exportRequestData";
 import initiativesService from "@/services/initiatives/initiatives.service";
-import { Initiative } from '@/models/api/models';
+import { Initiative } from "@/models/api/models";
 
 @Component({
   components: {
@@ -181,7 +182,7 @@ export default class Dashboard extends Vue {
 
   initiatives: Initiative[] = [];
   initiativeNames: string[] = [];
-  initiative?: Initiative;
+  initiative?: Initiative = { id: "", name: "" };
 
   selectedTab: "Subsidies" | "Citizens" = "Subsidies";
   message?: string = "";
@@ -197,20 +198,25 @@ export default class Dashboard extends Vue {
     this.$router.push(newRoute);
   }
 
-  async loadInitiative(initiative: string) {
-    this.initiative = this.initiatives.find(i => i.name === initiative);
+  async loadInitiative(initiativeName?: string) {
+    if (!initiativeName) {
+      this.initiative = this.initiatives.find(i => i.default === true);
+    } else {
+      this.initiative = this.initiatives.find(i => i.name === initiativeName);
+    }
 
-    this.masterAccounts = await masterAccountService.getAll(this.initiative!.name);
+    this.masterAccounts = await masterAccountService.getAll(
+      this.initiative!.name
+    );
     this.citizens = await citizenService.getAll();
     this.allSubsidies = await subsidyService.getAll();
   }
 
   async mounted() {
-    const initiatives = await initiativesService.getInitiatives();
-    const defaultInitiative = initiatives.find(i => i.default === true)!.name!;
+    this.initiatives = await initiativesService.getInitiatives();
+    this.initiativeNames = this.initiatives.map(i => i.name!);
 
-    this.initiativeNames = initiatives.map(i => i.name!);
-    this.loadInitiative(this.$route.params.initiative || defaultInitiative);
+    this.loadInitiative(this.$route.params.initiative);
   }
 
   @Watch("$route")

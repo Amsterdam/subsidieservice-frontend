@@ -53,6 +53,9 @@ export default class ExportRequest extends Mixins(ErrorMixin) {
   startDate = "";
   endDate = "";
 
+  @Prop()
+  initiativeName!: string;
+
   submit() {
     this.setErrors(this.validate());
 
@@ -60,7 +63,7 @@ export default class ExportRequest extends Mixins(ErrorMixin) {
       const from = this.startDate ? new Date(this.startDate) : undefined;
       const to = this.endDate ? new Date(this.endDate) : undefined;
 
-      const requestData: ExportRequestData = { from, to };
+      const requestData: ExportRequestData = { from, to, initiative: this.initiativeName };
       this.$emit("submit", requestData);
     }
   }
