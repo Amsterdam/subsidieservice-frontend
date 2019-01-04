@@ -18,8 +18,8 @@
           <td>{{ transaction.amount }}</td>
           <td>
             <span v-if="transaction.timestamp">
-              {{ transaction.timestamp.toLocaleDateString('nl') }}
-              {{ transaction.timestamp.toLocaleTimeString('nl') }}
+              {{ new Date(Date.parse(transaction.timestamp)).toLocaleDateString('nl') }}
+              {{ new Date(Date.parse(transaction.timestamp)).toLocaleTimeString('nl') }}
             </span>
           </td>
         </tr>
