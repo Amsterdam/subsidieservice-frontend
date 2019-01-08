@@ -19,10 +19,11 @@ export class HttpCsvService extends HttpServiceBase implements CsvService {
     }
 
     private async getCsv(requestData: ExportRequestData) {
-        const { from, to } = requestData;
+        const { from, to, initiative } = requestData;
         const formatted = {
             from: from ? from.toISOString().split('T').shift() : undefined,
-            to: to ? to.toISOString().split('T').shift() : undefined
+            to: to ? to.toISOString().split('T').shift() : undefined,
+            initiative
         };
         const csvUrl = super.prepareQueryUrl("/subsidies/transactions", formatted);
         return await super.getRaw(csvUrl);
