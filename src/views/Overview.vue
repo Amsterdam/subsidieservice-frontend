@@ -248,7 +248,7 @@ export default class Dashboard extends Vue {
       await masterAccountService.create(
         Object.assign(masterAccount, { initiative: this.initiative })
       );
-      this.masterAccounts = await masterAccountService.getAll();
+      this.masterAccounts = await masterAccountService.getAll(this.initiative!.name);
       this.message = "";
       this.showMasterAccountCreation = false;
     } catch (error) {
