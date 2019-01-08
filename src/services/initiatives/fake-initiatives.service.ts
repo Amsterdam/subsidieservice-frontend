@@ -3,6 +3,8 @@ import { Initiative } from '../../models/api/initiative';
 
 export class FakeInitiativesService implements InitiativesService {
 
+    static FAKE_INITIATIVE_DEFAULT = "maas";
+
     getInitiatives() {
         const initiatives: Initiative[] = [
             {  id: "1", name: "maas", default: true },
