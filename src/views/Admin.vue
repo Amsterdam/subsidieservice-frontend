@@ -66,7 +66,7 @@ export default class Admin extends Vue {
 
   async updateUser(user: Partial<User>) {
     try {
-      await userService.update(user.username!, user.password!, user.is_admin!);
+      await userService.update(user);
       this.editedUser = {};
       this.error = "";
     } catch (error) {
@@ -87,11 +87,9 @@ export default class Admin extends Vue {
 
   async deleteUser(user: User) {
     try {
-      if (user.username) {
-        await userService.deleteUser(user.username);
-        this.users = await userService.getAllUsers();
-        this.error = "";
-      }
+      await userService.deleteUser(user.id!);
+      this.users = await userService.getAllUsers();
+      this.error = "";
     } catch (error) {
       this.error = "Failed to delete user. Error: " + error.message;
     }

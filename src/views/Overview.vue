@@ -1,5 +1,5 @@
 <template>
-  <div id="overview" class="container">
+  <div id="overview" class="container" v-if="initiative">
     <div id="initiative-buttons">
       <TabButtons
         :tab-names="initiativeNames"
@@ -203,6 +203,10 @@ export default class Dashboard extends Vue {
       this.initiative = this.initiatives.find(i => i.default === true);
     } else {
       this.initiative = this.initiatives.find(i => i.name === initiativeName);
+    }
+
+    if (!this.initiative) {
+      throw new Error(`Could not load the current initiative ${initiativeName || ''}`);
     }
 
     this.masterAccounts = await masterAccountService.getAll(

@@ -50,7 +50,7 @@ export abstract class HttpServiceBase {
 
     async delete<T>(url: string) {
         const res = await fetch(this.baseUrl + url, {
-            method: "GET",
+            method: "DELETE",
             headers: {
                 Authorization: `Basic ${this.credentials.getCredentials()}`
             }

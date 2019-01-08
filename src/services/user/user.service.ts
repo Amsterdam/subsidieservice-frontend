@@ -7,11 +7,11 @@ export interface UserService {
 
     create(data: User): Promise<void>;
 
-    update(username: string, newPassword: string, isAdmin: boolean): Promise<void>;
+    update(user: Partial<User>): Promise<void>;
 
     getAllUsers(): Promise<User[]>;
 
-    deleteUser(username: string): Promise<void>;
+    deleteUser(id: string): Promise<void>;
 
     isAdmin(): boolean;
 

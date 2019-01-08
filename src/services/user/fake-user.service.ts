@@ -33,20 +33,20 @@ export class FakeUserService implements UserService {
         return Promise.resolve();
     }
 
-    update(username: string, newPassword: string, isAdmin?: boolean) {
-        const user = this.validUsers.find(u => u.username === username);
-        if (user && newPassword) {
-            user.password = newPassword;
+    update(user: User) {
+        const existingUser = this.validUsers.find(u => u.id === user.id);
+        if (existingUser && user.password) {
+            existingUser.password = user.password;
         }
-        if (user && isAdmin !== undefined) {
-            user.is_admin = isAdmin;
+        if (existingUser && user.is_admin !== undefined) {
+            existingUser.is_admin = user.is_admin;
         }
 
         return Promise.resolve();
     }
 
-    deleteUser(username: string) {
-        this.validUsers = this.validUsers.filter(u => u.username !== username);
+    deleteUser(id: string) {
+        this.validUsers = this.validUsers.filter(u => u.id !== id);
         return Promise.resolve();
     }
 
