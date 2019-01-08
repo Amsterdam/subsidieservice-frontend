@@ -196,6 +196,9 @@ export default class Dashboard extends Vue {
   changeInitiative(initiative: string) {
     const newRoute = { name: this.$route.name, params: { initiative } };
     this.$router.push(newRoute);
+    this.selectedMasterAccount = {};
+    this.filteredSubsidies = [];
+    this.selectedSubsidy = {};
   }
 
   async loadInitiative(initiativeName?: string) {
