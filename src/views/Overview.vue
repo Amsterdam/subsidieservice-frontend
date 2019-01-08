@@ -314,6 +314,7 @@ export default class Dashboard extends Vue {
   async createPayment(payment: Payment) {
     await paymentService.createPayment(payment);
     this.showPaymentCreation = false;
+    await this.onSubsidySelection(this.selectedSubsidyId!);
   }
 
   async exportData(requestData: ExportRequestData) {
