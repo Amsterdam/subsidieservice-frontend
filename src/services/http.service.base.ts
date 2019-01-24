@@ -55,7 +55,6 @@ export abstract class HttpServiceBase {
                 Authorization: `Basic ${this.credentials.getCredentials()}`
             }
         });
-        return await this.readBody<T>(res);
     }
 
     prepareQueryUrl<T>(route: string, params: T) {
@@ -79,6 +78,11 @@ export abstract class HttpServiceBase {
             },
             body: JSON.stringify(data)
         });
-        return await this.readBody<T>(res);
+
+        if (res.status !== 204) {
+            return await this.readBody<T>(res);
+        } else {
+            return undefined;
+        }
     }
 }
