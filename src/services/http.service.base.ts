@@ -12,7 +12,12 @@ export abstract class HttpServiceBase {
     }
 
     async readBody<T>(response: Response) {
+        if (response.headers.get('content-length') === "0") {
+            return {} as T;
+        }
+
         const json = await response.json();
+
         if (response.status >= 400) {
             const error = json as ApiError;
             throw new Error(`${error.title}. ${error.detail}`);
@@ -55,6 +60,8 @@ export abstract class HttpServiceBase {
                 Authorization: `Basic ${this.credentials.getCredentials()}`
             }
         });
+
+        return await this.readBody<T>(res);
     }
 
     prepareQueryUrl<T>(route: string, params: T) {
