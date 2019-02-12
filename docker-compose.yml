@@ -5,7 +5,7 @@ services:
       dockerfile: ./Dockerfile
       context: .
       args:
-        VUE_APP_API_URL: "https://acc.subsidieservice.amsterdam.nl/api/v1"
+        VUE_APP_API_URL: "https://acc.subsidieservice.amsterdam.nl/api/v2"
     ports:
       - "8081:80"
 

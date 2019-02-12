@@ -27,7 +27,7 @@ node {
         tryStep "build", {
             def image = docker.build("build.app.amsterdam.nl:5000/cto/subsidieservicefrontend:${env.BUILD_NUMBER}",
                 "--shm-size 1G " +
-                "--build-arg VUE_APP_API_URL=https://acc.subsidieservice.amsterdam.nl/api/v1 " +
+                "--build-arg VUE_APP_API_URL=https://acc.subsidieservice.amsterdam.nl/api/v2 " +
                 ". ")
             image.push()
         }
@@ -71,7 +71,7 @@ if (BRANCH == "master") {
             tryStep "build", {
                 def image = docker.build("build.app.amsterdam.nl:5000/cto/subsidieservicefrontend:${env.BUILD_NUMBER}",
                     "--shm-size 1G " +
-                    "--build-arg VUE_APP_API_URL=https://subsidieservice.amsterdam.nl/api/v1 " +
+                    "--build-arg VUE_APP_API_URL=https://subsidieservice.amsterdam.nl/api/v2 " +
                     ".")
                 image.push("production")
                 image.push("latest")
