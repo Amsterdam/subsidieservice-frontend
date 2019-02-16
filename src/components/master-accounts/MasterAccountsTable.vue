@@ -5,6 +5,7 @@
           <thead>
             <tr>
               <th>Name</th>
+              <th>IBAN</th>
               <th>Description</th>
               <th>Balance</th>
             </tr>
@@ -13,6 +14,7 @@
             <tr v-for="account in data" :key="account.id"
             v-bind:class="{ selected: selected === account.id }" @click="assignAccount(account.id)">
               <td>{{ account.name }}</td>
+              <td>{{ account.iban }}</td>
               <td>{{ account.description }}</td>
               <td>{{ account.balance }}</td>
             </tr>
